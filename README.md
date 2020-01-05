@@ -24,7 +24,17 @@ NBA Stat Race (NBASR) is an example of sports data being turned onto its heels t
 
 This app will consist of a single page with multiple different elements. There will be a drop-down to select a season, a drop-down to select the stat, and on the right side of the page on this row there will be a button to open the glossary modal. On the next row we have an input field to search for and add players. The players who have been added will be shown in a bar to the right of the input field, with the bar updating as players get added. Underneath these elements will be the rendered line graph which will be the center of the entire page. Lastly there is a footer at the bottom, which will contain links to my GitHub, LinkedIn, and any other relevant links.
 
-< images >
+***Main Page***
+
+![main_wireframe]
+
+[main_wireframe]: https://raw.githubusercontent.com/MannanK/NBA-Stat-Race/master/src/assets/main_wireframe.png
+
+***Glossary Modal***
+
+![modal_wireframe]
+
+[modal_wireframe]: https://raw.githubusercontent.com/MannanK/NBA-Stat-Race/master/src/assets/modal_wireframe.png
 
 ### Architecture and Technology
 
