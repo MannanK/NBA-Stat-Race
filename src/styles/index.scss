@@ -1,3 +1,4 @@
+/*
 // MIXINS && VARIABLES
 
 @mixin basic-box-shadow($color) {
@@ -34,4 +35,69 @@ body {
 // TYPOGRAPHY
 h2 {
   font-size: 3rem;
+}
+
+*/
+
+// WHOLE PAGE CONTENT DIV
+
+.content {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(28, 28, 28);
+  width: 100vw;
+  height: 100vh;
+  padding: 5vh;
+  box-sizing: border-box;
+}
+
+// SITE HEADER
+
+.site-header {
+  align-self: center;
+  font-size: 40px;
+  color: white;
+  margin-bottom: 40px;
+}
+
+// TOP ROW
+
+.top-row {
+  display: flex;
+  justify-content: space-between;
+  height: 3vh;
+}
+
+// LEFT TOP ROW
+
+.left-top-row {
+  display: flex;
+  width: 33vw;
+  justify-content: space-between;
+}
+
+// SEASON DROPDOWN
+
+.season-dropdown {
+  width: 15vw;
+}
+
+// STAT DROPDOWN
+
+.stat-dropdown {
+  width: 15vw;
+}
+
+// RIGHT TOP ROW
+
+.right-top-row {
+  display: flex;
+  width: 6vw;
+  min-width: fit-content;
+}
+
+// GLOSSARY BUTTON
+
+.glossary-button {
+  width: 100%;
 }
