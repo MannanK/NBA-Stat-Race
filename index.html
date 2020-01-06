@@ -11,7 +11,7 @@
 </head>
 
 <body>
-  <div class="content">
+  <main class="content">
     <header class="site-header">NBA Stat Race</header>
     
     <section class="top-row">
@@ -22,6 +22,7 @@
           <option value="2018">2018</option>
           <option value="2017">2017</option>
           <option value="2016">2016</option>
+          <option value="2015">2015</option>
         </select>
         
         <select class="stat-dropdown">
@@ -39,7 +40,27 @@
         </button>
       </section>
     </section>
-  </div>
+
+    <section class="bottom-row">
+      <section class="search-players-input-container">
+        <input class="search-players-input" type="text" placeholder="Search for players...">
+      </section>
+
+      <section class="player-names">
+        Player names
+      </section>
+    </section>
+
+    <div id="chart-container">
+      <svg id="chart">
+        
+      </svg>
+    </div>
+
+    <footer>
+    
+    </footer>
+  </main>
 
   <script src="./dist/main.js"></script>
 </body>

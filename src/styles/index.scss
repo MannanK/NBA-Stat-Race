@@ -57,15 +57,16 @@ h2 {
   align-self: center;
   font-size: 40px;
   color: white;
-  margin-bottom: 40px;
+  margin-bottom: 35px;
 }
 
-// TOP ROW
+// TOP ROW, BOTTOM ROW
 
-.top-row {
+.top-row, .bottom-row {
   display: flex;
   justify-content: space-between;
   height: 3vh;
+  margin-bottom: 35px;
 }
 
 // LEFT TOP ROW
@@ -92,7 +93,7 @@ h2 {
 
 .right-top-row {
   display: flex;
-  width: 6vw;
+  width: 5vw;
   min-width: fit-content;
 }
 
@@ -100,4 +101,32 @@ h2 {
 
 .glossary-button {
   width: 100%;
+}
+
+// SEARCH PLAYERS INPUT
+
+.search-players-input-container {
+  display: flex;
+  width: 18vw;
+  margin-right: 7vw;
+}
+
+.search-players-input {
+  width: 100%;
+}
+
+// PLAYER NAMES
+
+.player-names {
+  width: 67.5vw;
+  display: flex;
+  background-color: rgba(0,0,0,0.5);
+  color: white;
+}
+
+footer {
+  display: flex;
+  flex-direction: column;
+  height: 4vh;
+  background-color: indianred;
 }

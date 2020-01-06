@@ -1,5 +1,6 @@
 import "./styles/reset.scss";
 import "./styles/index.scss";
+import "./styles/chart.scss";
 
 const testObj = {
   key1: "hi",
