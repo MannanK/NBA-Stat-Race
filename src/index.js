@@ -1,4 +1,6 @@
+import "./styles/reset.scss";
 import "./styles/index.scss";
+
 const testObj = {
   key1: "hi",
   key2: {
