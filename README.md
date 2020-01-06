@@ -57,15 +57,15 @@ Set up the project skeleton, figure out and install all necessary node modules, 
 
 **Day 2**
 
-Figure out completely how to use the MySportsFeeds API and finish as much of `apiParsing.js` as possible, start using D3 to implement the rendering of the chart
+Figure out completely how to use the MySportsFeeds API and finish as much of `apiParsing.js` as possible, start using D3 to implement the rendering of the graph
 
 **Day 3**
 
-Dedicate this day to learning D3 and writing out as much of `chart.js` as possible, modify parsing of data returned from the API if needed
+Dedicate this day to learning D3 and writing out as much of `graph.js` as possible, modify parsing of data returned from the API if needed
 
 **Day 4**
 
-Continue working on making the chart look visually appealing, create the Glossary modal, work on bonus features if there's time
+Continue working on making the graph look visually appealing, create the Glossary modal, work on bonus features if there's time
 
 **Day 5**
 
