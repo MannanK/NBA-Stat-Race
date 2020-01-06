@@ -44,9 +44,8 @@ h2 {
 .content {
   display: flex;
   flex-direction: column;
-  background-color: rgb(28, 28, 28);
-  width: 100vw;
-  height: 100vh;
+  background-color: #1c1c1c;
+  width: 100%;
   padding: 5vh;
   box-sizing: border-box;
 }
@@ -118,11 +117,13 @@ h2 {
 // PLAYER NAMES
 
 .player-names {
-  width: 67.5vw;
+  width: 65.5vw;
   display: flex;
   background-color: rgba(0,0,0,0.5);
   color: white;
 }
+
+// FOOTER
 
 footer {
   display: flex;
