@@ -7,8 +7,10 @@ function makeGraph() {
   let height = docGraphHeight - margin.top - margin.bottom;
 
   let svg = d3.select('#graph-container').append("svg")
-      .attr("width", docGraphWidth)
-      .attr("height", docGraphHeight)
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr('viewBox', '0 0 ' + Math.min(docGraphWidth, docGraphHeight) + ' ' + Math.min(docGraphWidth, docGraphHeight))
+      .attr('preserveAspectRatio', 'xMinYMin')
     .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 }
