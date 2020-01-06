@@ -1,0 +1,48 @@
+{
+  "name": "nba-stat-race",
+  "version": "1.0.0",
+  "description": "An NBA stats visualizer to plot the route a given stat took over the course of a given season for the selected players, leading up to the \"winner\" in that stat by season's end.",
+  "main": "index.js",
+  "browserslist": [
+    "last 1 version",
+    "> 1%",
+    "maintained node versions",
+    "not dead"
+  ],
+  "scripts": {
+    "start": "webpack-dev-server --config webpack.dev.js",
+    "webpack:watch": "webpack --watch --config webpack.dev.js",
+    "webpack:build": "webpack --config webpack.prod.js  --optimize-minimize"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MannanK/NBA-Stat-Race.git"
+  },
+  "author": "mkasliw1",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MannanK/NBA-Stat-Race/issues"
+  },
+  "homepage": "https://github.com/MannanK/NBA-Stat-Race#readme",
+  "dependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "autoprefixer": "^9.7.3",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^3.4.1",
+    "fibers": "^4.0.2",
+    "mini-css-extract-plugin": "^0.9.0",
+    "node-sass": "^4.13.0",
+    "postcss-loader": "^3.0.0",
+    "sass": "^1.24.2",
+    "sass-loader": "^8.0.0",
+    "style-loader": "^1.1.2",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1",
+    "webpack-merge": "^4.2.2"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.7.5"
+  }
+}

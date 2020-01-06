@@ -1,0 +1,38 @@
+// MIXINS && VARIABLES
+
+@mixin basic-box-shadow($color) {
+  box-shadow: 3px 3px 5px 5px $color, 1px 0px 1px $color;
+}
+
+$main-color: green;
+$accent-color: darken($main-color, 10%);
+$background-color: lighten($main-color, 40%);
+
+// LAYOUT
+
+body {
+  background-color: $background-color;
+  color: $main-color;
+  height: 97vh;
+  width: 100vw;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// COMPONENTS
+.card {
+  background: white;
+  height: 50vh;
+  width: 50vw;
+  border-radius: 15px;
+  @include basic-box-shadow($accent-color);
+}
+
+// TYPOGRAPHY
+h2 {
+  font-size: 3rem;
+}
