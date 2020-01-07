@@ -259,13 +259,13 @@ function makeGraph() {
   let line = d3.line()
     .x(function (d) { return xScale(d.game); })
     .y(function (d) { return yScale(d.total); })
-    .curve(d3.curveMonotoneX);
+    .curve(d3.curveLinear);
+
+  let color = d3.scaleOrdinal(d3.schemeCategory10);
 
   g.append("g")
     .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(xScale))
-    .select(".domain")
-    .remove();
+    .call(d3.axisBottom(xScale));
 
   g.append("g")
     .call(d3.axisLeft(yScale))
@@ -274,44 +274,31 @@ function makeGraph() {
     .attr("transform", "rotate(-90)")
     .attr("y", 10)
     .attr("dy", "0.8em")
-    .attr("text-anchor", "end")
     .text("Total");
 
-  g.append("path")
-    .datum(data.joelEmbiid)
-    .attr("class", "line")
-    .attr("fill", "none")
-    .attr("stroke", "orange")
-    .attr("stroke-linejoin", "round")
-    .attr("stroke-linecap", "round")
-    .attr("d", line);
 
-  g.append("path")
-    .datum(data.stephenCurry)
-    .attr("class", "line")
-    .attr("fill", "none")
-    .attr("stroke", "red")
-    .attr("stroke-linejoin", "round")
-    .attr("stroke-linecap", "round")
-    .attr("d", line);
 
-  g.append("path")
-    .datum(data.georgeHill)
-    .attr("class", "line")
-    .attr("fill", "none")
-    .attr("stroke", "steelblue")
-    .attr("stroke-linejoin", "round")
-    .attr("stroke-linecap", "round")
-    .attr("d", line);
+  Object.values(data).forEach((player, i) => {
+    g.append("path")
+      .datum(player)
+      .attr("class", "line")
+      .attr("fill", "none")
+      .attr("stroke", color(i+1))
+      .attr("d", line);
 
-  g.selectAll(".dot")
-    .data(data.georgeHill)
-    .enter()
-    .append("circle")
-    .attr("class", "dot")
-    .attr("cx", function (d) { return xScale(d.game); })
-    .attr("cy", function (d) { return yScale(d.total); })
-    .attr("r", ".30%");
+    g.selectAll(`.dot-${i+1}`)
+      .data(player)
+      .enter()
+      .append("circle")
+      .attr("class", `dot dot-${i+1}`)
+      .attr("stroke", color(i+1))
+      .attr("fill", "white")
+      .attr("cx", function (d) { return xScale(d.game); })
+      .attr("cy", function (d) { return yScale(d.total); })
+      .attr("r", ".25%");
+  });
+
+  
 }
 
 module.exports = {
