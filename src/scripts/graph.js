@@ -204,8 +204,27 @@ let data = {
   ]
 };
 
+function resizingFunction(svg) {
+  let width = parseInt(svg.style('width'), 10);
+  let height = parseInt(svg.style('height'), 10);
+  let aspectRatio = width / height;
+
+  svg.attr('viewBox', `0 0 ${width} ${height}`)
+    .attr('preserveAspectRatio', 'xMinYMin')
+    .call(resize);
+
+  d3.select(window).on('resize', resize);
+
+  function resize() {
+    let docGraphWidth = document.getElementById("graph-container").clientWidth;
+
+    svg.attr('width', docGraphWidth);
+    svg.attr('height', Math.round(docGraphWidth / aspectRatio));
+  }
+}
+
 function makeGraph() {
-  let margin = { top: 40, right: 40, bottom: 40, left: 40 };
+  let margin = { top: 50, right: 50, bottom: 50, left: 50 };
   let docGraphWidth = document.getElementById("graph-container").clientWidth;
   let docGraphHeight = document.getElementById("graph-container").clientHeight;
 
@@ -215,10 +234,9 @@ function makeGraph() {
   // Margin convention and make the graph resize as the window resizes
   // From now on, all subsequent code can just use 'width' and 'height'
   let svg = d3.select('#graph-container').append("svg")
-      .attr("width", "100%")
-      .attr("height", "100%")
-      .attr('viewBox', '0 0 ' + Math.min(docGraphWidth, docGraphHeight) + ' ' + Math.min(docGraphWidth, docGraphHeight))
-      .attr('preserveAspectRatio', 'xMinYMin');
+      .attr('width', docGraphWidth)
+      .attr('height', docGraphHeight)
+      .call(resizingFunction);
 
   let g = svg.append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -233,7 +251,8 @@ function makeGraph() {
 
   let line = d3.line()
     .x(function (d) { return xScale(d.total); })
-    .y(function (d) { return yScale(d.game); });
+    .y(function (d) { return yScale(d.game); })
+    .curve(d3.curveMonotoneX);
 
   xScale.domain(d3.extent(data.joelEmbiid, function (d) { return d.total; }));
   yScale.domain(d3.extent(data.joelEmbiid, function (d) { return d.game; }));
@@ -249,13 +268,14 @@ function makeGraph() {
     .append("text")
     .attr("fill", "#000")
     .attr("transform", "rotate(-90)")
-    .attr("y", 6)
-    .attr("dy", "0.71em")
+    .attr("y", 10)
+    .attr("dy", "0.8em")
     .attr("text-anchor", "end")
     .text("Total");
 
   g.append("path")
     .datum(data.joelEmbiid)
+    .attr("class", "line")
     .attr("fill", "none")
     .attr("stroke", "steelblue")
     .attr("stroke-linejoin", "round")
