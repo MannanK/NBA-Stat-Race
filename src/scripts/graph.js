@@ -261,15 +261,6 @@ function makeGraph() {
     .y(function (d) { return yScale(d.total); })
     .curve(d3.curveMonotoneX);
 
-  // xScale.domain(d3.extent(data.stephenCurry, function (d) { return d.game; }));
-  // yScale.domain(d3.extent(data.stephenCurry, function (d) { return d.total; }));
-
-  // yScale.domain(d3.extent(Object.values(data).map(function (player) {
-  //   return d3.extent(player, function (obj) {
-  //     return obj.total;
-  //   })[1];
-  // })));
-
   g.append("g")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(xScale))
@@ -287,14 +278,40 @@ function makeGraph() {
     .text("Total");
 
   g.append("path")
+    .datum(data.joelEmbiid)
+    .attr("class", "line")
+    .attr("fill", "none")
+    .attr("stroke", "orange")
+    .attr("stroke-linejoin", "round")
+    .attr("stroke-linecap", "round")
+    .attr("d", line);
+
+  g.append("path")
     .datum(data.stephenCurry)
+    .attr("class", "line")
+    .attr("fill", "none")
+    .attr("stroke", "red")
+    .attr("stroke-linejoin", "round")
+    .attr("stroke-linecap", "round")
+    .attr("d", line);
+
+  g.append("path")
+    .datum(data.georgeHill)
     .attr("class", "line")
     .attr("fill", "none")
     .attr("stroke", "steelblue")
     .attr("stroke-linejoin", "round")
     .attr("stroke-linecap", "round")
-    .attr("stroke-width", 1.5)
     .attr("d", line);
+
+  g.selectAll(".dot")
+    .data(data.georgeHill)
+    .enter()
+    .append("circle")
+    .attr("class", "dot")
+    .attr("cx", function (d) { return xScale(d.game); })
+    .attr("cy", function (d) { return yScale(d.total); })
+    .attr("r", ".30%");
 }
 
 module.exports = {
