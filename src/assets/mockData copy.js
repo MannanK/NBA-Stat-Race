@@ -1,6 +1,4 @@
-// hardcoded data for now
-// game # : total stat so far
-let data = {
+let threePointersMade = {
   stephenCurry: [
     { game: 1, total: 3 },
     { game: 2, total: 7 },
@@ -55,7 +53,7 @@ let data = {
     { game: 51, total: 212 }
   ],
   joelEmbiid: [
-    { game: 1, total: 0 },
+    { game: 1, total: 0 }, 
     { game: 2, total: 0 },
     { game: 3, total: 1 },
     { game: 4, total: 2 },
@@ -202,68 +200,4 @@ let data = {
     { game: 69, total: 85 },
     { game: 70, total: 85 }
   ]
-};
-
-function makeGraph() {
-  let margin = { top: 40, right: 40, bottom: 40, left: 40 };
-  let docGraphWidth = document.getElementById("graph-container").clientWidth;
-  let docGraphHeight = document.getElementById("graph-container").clientHeight;
-
-  let width = docGraphWidth - margin.left - margin.right;
-  let height = docGraphHeight - margin.top - margin.bottom;
-
-  // Margin convention and make the graph resize as the window resizes
-  // From now on, all subsequent code can just use 'width' and 'height'
-  let svg = d3.select('#graph-container').append("svg")
-      .attr("width", "100%")
-      .attr("height", "100%")
-      .attr('viewBox', '0 0 ' + Math.min(docGraphWidth, docGraphHeight) + ' ' + Math.min(docGraphWidth, docGraphHeight))
-      .attr('preserveAspectRatio', 'xMinYMin');
-
-  let g = svg.append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-  let xScale = d3.scaleLinear()
-    // .domain([0, 82]) // input
-    .range([0, width]); // output
-
-  let yScale = d3.scaleLinear()
-    // .domain([0, 230]) // input
-    .range([height, 0]); // output
-
-  let line = d3.line()
-    .x(function (d) { return xScale(d.total); })
-    .y(function (d) { return yScale(d.game); });
-
-  xScale.domain(d3.extent(data.joelEmbiid, function (d) { return d.total; }));
-  yScale.domain(d3.extent(data.joelEmbiid, function (d) { return d.game; }));
-
-  g.append("g")
-    .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(xScale))
-    .select(".domain")
-    .remove();
-
-  g.append("g")
-    .call(d3.axisLeft(yScale))
-    .append("text")
-    .attr("fill", "#000")
-    .attr("transform", "rotate(-90)")
-    .attr("y", 6)
-    .attr("dy", "0.71em")
-    .attr("text-anchor", "end")
-    .text("Total");
-
-  g.append("path")
-    .datum(data.joelEmbiid)
-    .attr("fill", "none")
-    .attr("stroke", "steelblue")
-    .attr("stroke-linejoin", "round")
-    .attr("stroke-linecap", "round")
-    .attr("stroke-width", 1.5)
-    .attr("d", line);
 }
-
-module.exports = {
-  makeGraph
-};
