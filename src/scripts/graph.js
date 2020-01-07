@@ -2,6 +2,7 @@
 // game # : total stat so far
 let data = {
   stephenCurry: [
+    { game: 0, total: 0 },
     { game: 1, total: 3 },
     { game: 2, total: 7 },
     { game: 3, total: 13 },
@@ -55,6 +56,7 @@ let data = {
     { game: 51, total: 212 }
   ],
   joelEmbiid: [
+    { game: 0, total: 0 },
     { game: 1, total: 0 },
     { game: 2, total: 0 },
     { game: 3, total: 1 },
@@ -131,6 +133,7 @@ let data = {
     { game: 74, total: 74 }
   ],
   georgeHill: [
+    { game: 0, total: 0 },
     { game: 1, total: 1 },
     { game: 2, total: 4 },
     { game: 3, total: 4 },
@@ -241,21 +244,31 @@ function makeGraph() {
   let g = svg.append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+  let maxTotal = Math.max(...Object.values(data).map(player => {
+    return player[player.length-1].total;
+  }));
+
   let xScale = d3.scaleLinear()
-    // .domain([0, 82]) // input
-    .range([0, width]); // output
+    .domain([0, 82])
+    .range([0, width]);
 
   let yScale = d3.scaleLinear()
-    // .domain([0, 230]) // input
-    .range([height, 0]); // output
+    .domain([0, maxTotal+20])
+    .range([height, 0]);
 
   let line = d3.line()
-    .x(function (d) { return xScale(d.total); })
-    .y(function (d) { return yScale(d.game); })
+    .x(function (d) { return xScale(d.game); })
+    .y(function (d) { return yScale(d.total); })
     .curve(d3.curveMonotoneX);
 
-  xScale.domain(d3.extent(data.joelEmbiid, function (d) { return d.total; }));
-  yScale.domain(d3.extent(data.joelEmbiid, function (d) { return d.game; }));
+  // xScale.domain(d3.extent(data.stephenCurry, function (d) { return d.game; }));
+  // yScale.domain(d3.extent(data.stephenCurry, function (d) { return d.total; }));
+
+  // yScale.domain(d3.extent(Object.values(data).map(function (player) {
+  //   return d3.extent(player, function (obj) {
+  //     return obj.total;
+  //   })[1];
+  // })));
 
   g.append("g")
     .attr("transform", "translate(0," + height + ")")
@@ -274,7 +287,7 @@ function makeGraph() {
     .text("Total");
 
   g.append("path")
-    .datum(data.joelEmbiid)
+    .datum(data.stephenCurry)
     .attr("class", "line")
     .attr("fill", "none")
     .attr("stroke", "steelblue")
