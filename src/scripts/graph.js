@@ -223,11 +223,15 @@ function resizingFunction(svg) {
 
     svg.attr('width', docGraphWidth);
     svg.attr('height', Math.round(docGraphWidth / aspectRatio));
+    document.getElementById("graph-container").style.height = `${Math.round(docGraphWidth / aspectRatio)}px`;
   }
 }
 
 export function makeGraph() {
   let margin = { top: 50, right: 50, bottom: 50, left: 50 };
+
+  // document.getElementById("graph-container").style.height = "75vh";
+
   let docGraphWidth = document.getElementById("graph-container").clientWidth;
   let docGraphHeight = document.getElementById("graph-container").clientHeight;
 
@@ -237,15 +241,15 @@ export function makeGraph() {
   // Margin convention and make the graph resize as the window resizes
   // From now on, all subsequent code can just use 'width' and 'height'
   let svg = d3.select('#graph-container').append("svg")
-      .attr('width', docGraphWidth)
-      .attr('height', docGraphHeight)
-      .call(resizingFunction);
+    .attr('width', docGraphWidth)
+    .attr('height', docGraphHeight)
+    .call(resizingFunction);
 
   let g = svg.append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   let maxTotal = Math.max(...Object.values(data).map(player => {
-    return player[player.length-1].total;
+    return player[player.length - 1].total;
   }));
 
   let xScale = d3.scaleLinear()
@@ -253,7 +257,7 @@ export function makeGraph() {
     .range([0, width]);
 
   let yScale = d3.scaleLinear()
-    .domain([0, maxTotal+20])
+    .domain([0, maxTotal + 20])
     .range([height, 0]);
 
   let line = d3.line()
@@ -285,17 +289,17 @@ export function makeGraph() {
   // for each object (player) in the data object, make the lines
   Object.values(data).forEach((player, i) => {
     // make the group element for the line
-    linesContainer.selectAll(`.line-group-${i+1}`)
+    linesContainer.selectAll(`.line-group-${i + 1}`)
       .data([player])
       .enter()
       .append("g")
-      .attr("class", `line-group line-group-${i+1}`)
+      .attr("class", `line-group line-group-${i + 1}`)
       // put the actual line on the screen
       .append("path")
       .datum(player)
       .attr("class", "line")
       .attr("fill", "none")
-      .attr("stroke", color(i+1))
+      .attr("stroke", color(i + 1))
       .attr("d", line);
   });
 

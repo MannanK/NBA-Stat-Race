@@ -79,14 +79,18 @@ function handlePlayerInput(e) {
   console.log(inputVal);
 
   if (inputVal !== "" && inputVal.length > 1) {
-    makeDebouncedSearch(inputVal);
+    debouncedSearch(inputVal);
   }
 }
 
-function makeDebouncedSearch(input) {
-  searchPlayers(input).then(data => {
-    
+function debouncedSearch(input) {
+  searchPlayers(input).then(searchResults => {
+    makePlayerDropdown(searchResults);
   });
+}
+
+function makePlayerDropdown(searchResults) {
+
 }
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -98,5 +102,5 @@ window.addEventListener("DOMContentLoaded", () => {
   const playerInputEl = document.getElementById("search-players-input");
 
   playerInputEl.oninput = handlePlayerInput;
-  makeDebouncedSearch = debounce(makeDebouncedSearch, 500);
+  debouncedSearch = debounce(debouncedSearch, 500);
 });
