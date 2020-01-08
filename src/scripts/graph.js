@@ -267,10 +267,12 @@ function makeGraph() {
   let color = d3.scaleOrdinal(d3.schemeCategory10);
 
   // change these two to g.append if want axis in front of the lines
+  // make the x axis group
   linesContainer.append("g")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(xScale));
 
+  // make the y axis group
   linesContainer.append("g")
     .call(d3.axisLeft(yScale))
     .append("text")
@@ -280,47 +282,56 @@ function makeGraph() {
     .attr("dy", "0.8em")
     .text("Total");
 
+  // for each object (player) in the data object, make the lines
   Object.values(data).forEach((player, i) => {
+    // make the group element for the line
     linesContainer.selectAll(`.line-group-${i+1}`)
       .data([player])
       .enter()
       .append("g")
       .attr("class", `line-group line-group-${i+1}`)
+      // put the actual line on the screen
       .append("path")
       .datum(player)
       .attr("class", "line")
       .attr("fill", "none")
       .attr("stroke", color(i+1))
       .attr("d", line);
+  });
 
-    linesContainer.selectAll(`.dot-group-${i+1}`)
+  // for each object (player) in the data object, make the dots and text
+  Object.values(data).forEach((player, i) => {
+    // make the group element for the dots
+    linesContainer.selectAll(`.dot-group-${i + 1}`)
       .data([player])
       .enter()
       .append("g")
-      .attr("class", `dot-group dot-group-${i+1}`)
-      .selectAll(`.dot-container-${i+1}`)
+      .attr("class", `dot-group dot-group-${i + 1}`)
+      .selectAll(`.dot-container-${i + 1}`)
       .data(player)
       .enter()
+      // make the group element container for each dot one by one (because of data)
       .append("g")
-      .attr("class", `dot-container dot-container-${i+1}`)
+      .attr("class", `dot-container dot-container-${i + 1}`)
       .on("mouseover", function (d) {
         d3.select(this)
           .style("cursor", "pointer")
           .append("text")
           .attr("class", "text")
-          .text(`${d.total}`)
+          .text(`Game: ${d.game}, Total: ${d.total}`)
           .attr('text-anchor', 'middle')
           .attr("x", d => xScale(d.game))
-          .attr("y", d => yScale(d.total)-15);
+          .attr("y", d => yScale(d.total) - 15);
       })
       .on("mouseout", function (d) {
         d3.select(this)
           .style("cursor", "none")
           .selectAll(".text").remove();
       })
+      // make the actual dot
       .append("circle")
-      .attr("class", `dot dot-${i+1}`)
-      .attr("stroke", color(i+1))
+      .attr("class", `dot dot-${i + 1}`)
+      .attr("stroke", color(i + 1))
       .attr("fill", "white")
       .attr("cx", function (d) { return xScale(d.game); })
       .attr("cy", function (d) { return yScale(d.total); })
