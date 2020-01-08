@@ -1,3 +1,5 @@
+import { parseSearchPlayerStats } from './api_parsing';
+
 const apiUrl = "https://www.balldontlie.io/api/v1/";
 
 function SEARCH_PLAYER_URL(playerName) {
@@ -29,11 +31,11 @@ export function searchPlayers(playerName) {
     .catch(error => console.log(error));
 }
 
-export function searchPlayerStats(season, playerId) {
+export function searchPlayerStats(season, stat, playerId) {
   return fetch(SEARCH_PLAYER_STATS_URL(season, playerId))
     .then(resp => resp.json())
     .then(data => {
-      return data.data;
+      return parseSearchPlayerStats(data);
     })
     .catch(error => console.log(error));
 }

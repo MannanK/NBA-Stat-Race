@@ -151,11 +151,12 @@ function handlePlayerClick(e) {
 
   if (seasonDropdown.selectedIndex > 0 && statDropdown.selectedIndex > 0) {
     let seasonVal = seasonDropdown.options[seasonDropdown.selectedIndex].value;
+    let statVal = statDropdown.options[statDropdown.selectedIndex].value;
     let playerVal = e.target.id;
 
-    searchPlayerStats(seasonVal, playerVal).then(searchResults => {
+    searchPlayerStats(seasonVal, statVal, playerVal).then(searchResults => {
       // makePlayerDropdown(searchResults);
-      console.log(searchResults);
+      console.log("returned to index");
     });
   }
 
