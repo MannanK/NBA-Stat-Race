@@ -3,6 +3,8 @@ import "./styles/index.scss";
 import "./styles/graph.scss";
 
 import { makeGraph } from './scripts/graph';
+import { searchPlayers } from './scripts/api_util';
+import { debounce } from 'lodash';
 
 const stats = [
   { 'fgm': "FGM" },
@@ -24,13 +26,6 @@ const stats = [
   { 'fg3_pct': "3PT%" },
   { 'ft_pct': "FT%" }
 ];
-
-window.addEventListener("DOMContentLoaded", () => {
-  makeGraph();
-
-  makeSeasonDropdown();
-  makeStatDropdown();
-});
 
 // make the season dropdown menu
 function makeSeasonDropdown() {
@@ -78,3 +73,30 @@ function makeStatDropdown() {
 
   dropdownEl.innerHTML = options;
 }
+
+function handlePlayerInput(e) {
+  let inputVal = e.currentTarget.value;
+  console.log(inputVal);
+
+  if (inputVal !== "" && inputVal.length > 1) {
+    makeDebouncedSearch(inputVal);
+  }
+}
+
+function makeDebouncedSearch(input) {
+  searchPlayers(input).then(data => {
+    
+  });
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  makeGraph();
+
+  makeSeasonDropdown();
+  makeStatDropdown();
+
+  const playerInputEl = document.getElementById("search-players-input");
+
+  playerInputEl.oninput = handlePlayerInput;
+  makeDebouncedSearch = debounce(makeDebouncedSearch, 500);
+});

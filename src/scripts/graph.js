@@ -226,7 +226,7 @@ function resizingFunction(svg) {
   }
 }
 
-function makeGraph() {
+export function makeGraph() {
   let margin = { top: 50, right: 50, bottom: 50, left: 50 };
   let docGraphWidth = document.getElementById("graph-container").clientWidth;
   let docGraphHeight = document.getElementById("graph-container").clientHeight;
@@ -338,7 +338,3 @@ function makeGraph() {
       .attr("r", ".25%");
   });
 }
-
-module.exports = {
-  makeGraph
-};
