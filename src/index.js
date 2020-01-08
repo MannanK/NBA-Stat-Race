@@ -75,6 +75,9 @@ function makeStatDropdown() {
   dropdownEl.innerHTML = options;
 }
 
+// check if the user has entered valid input
+// if yes, pass off the input to the debouncedSearch
+// if not, remove the dropdown element from the DOM
 function handlePlayerInput(e) {
   let inputVal = e.currentTarget.value;
 
@@ -87,23 +90,31 @@ function handlePlayerInput(e) {
   }
 }
 
+// user made a valid input, pass off to searchPlayers to send the API request
+// on return, make the dropdown containing the results
 function debouncedSearch(input) {
   searchPlayers(input).then(searchResults => {
     makePlayerDropdown(searchResults);
   });
 }
 
+// with the results gotten from the API requests, make the dropdown element
 function makePlayerDropdown(searchResults) {
   const playerInputContainer = document.getElementsByClassName("search-players-input-container")[0];
 
   let playerList = document.getElementById("player-dropdown");
+  
+  // if the dropdown currently exists (user added more letters), empty it out
   if (playerList) {
     playerList.innerHTML = "";
-  } else {
+  }
+  // otherwise, make a new ul for the dropdown
+  else {
     playerList = document.createElement("ul")
     playerList.setAttribute("id", "player-dropdown");
   }
 
+  // one by one create a new list element for each player
   searchResults.forEach(({ first_name, last_name, id }) => {
     let playerName = first_name + " " + last_name;
 
@@ -114,6 +125,7 @@ function makePlayerDropdown(searchResults) {
     playerList.append(playerItem);
   });
 
+  // add the list items to the dropdown
   playerInputContainer.append(playerList);
 }
 
@@ -125,17 +137,22 @@ window.addEventListener("DOMContentLoaded", () => {
 
   const playerInputEl = document.getElementById("search-players-input");
 
+  // every time the user changes the input field, call handlePlayerInput
   playerInputEl.oninput = handlePlayerInput;
 
+  // if user clicks outside of the dropdown or input field, hide the dropdown
+    // if it is currently on the page
   document.onclick = function(e) {
     if (e.target.id !== "search-players-input" && e.target.className !== "player-item") {
       if (document.getElementById("player-dropdown")) {
-        console.log("got here");
         document.getElementById("player-dropdown").style.display = "none";
       }
     }
   }
 
+  // if user clicks on the input field, show the dropdown if it is currently
+    // hidden
+  // allows us to not send out another API call since input hasn't changed
   playerInputEl.onclick = function(e) {
     if (document.getElementById("player-dropdown")) {
       document.getElementById("player-dropdown").style.display = "";
