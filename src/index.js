@@ -28,6 +28,8 @@ const stats = [
   { 'ft_pct': "FT%" }
 ];
 
+let data = [];
+
 // make the season dropdown menu
 function makeSeasonDropdown() {
   const dropdownEl = document.getElementById("season-dropdown");
@@ -155,16 +157,14 @@ function handlePlayerClick(e) {
     let playerVal = e.target.id;
 
     searchPlayerStats(seasonVal, statVal, playerVal).then(searchResults => {
-      // makePlayerDropdown(searchResults);
-      console.log("returned to index");
+      data.push(searchResults);
+
+      makeGraph(data);
     });
   }
-
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  makeGraph();
-
   makeSeasonDropdown();
   makeStatDropdown();
 

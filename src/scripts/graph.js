@@ -1,6 +1,6 @@
 // hardcoded data for now
 // game # : total stat so far
-let data = [
+let dataOld = [
   {
     "name": "Stephen Curry",
     "values": [
@@ -236,7 +236,7 @@ function resizingFunction(svg) {
   }
 }
 
-export function makeGraph() {
+export function makeGraph(data) {
   let margin = { top: 50, right: 50, bottom: 50, left: 50 };
 
   // document.getElementById("graph-container").style.height = "75vh";
@@ -297,24 +297,7 @@ export function makeGraph() {
     .attr("dy", "0.8em")
     .text("Total");
 
-  // // for each object (player) in the data object, make the lines
-  // Object.values(data).forEach((player, i) => {
-  //   // make the group element for the line
-  //   linesContainer.selectAll(`.line-group-${i + 1}`)
-  //     .data([player])
-  //     .enter()
-  //     .append("g")
-  //     .attr("class", `line-group line-group-${i + 1}`)
-  //     // put the actual line on the screen
-  //     .append("path")
-  //     .datum(player)
-  //     .attr("class", "line")
-  //     .attr("fill", "none")
-  //     .attr("stroke", color(i + 1))
-  //     .attr("d", line);
-  // });
-
-  // for each object (player) in the data object, make the lines
+  // for each object (player) in the data array, make the lines
   // make the group element for the line
   linesContainer.selectAll(`.line-group`)
     .data(data)
@@ -328,46 +311,7 @@ export function makeGraph() {
     .attr("fill", "none")
     .attr("stroke", (d, i) => color(i))
 
-  // // for each object (player) in the data object, make the dots and text
-  // Object.values(data).forEach((player, i) => {
-  //   // make the group element for the dots
-  //   linesContainer.selectAll(`.dot-group-${i + 1}`)
-  //     .data([player])
-  //     .enter()
-  //     .append("g")
-  //     .attr("class", `dot-group dot-group-${i + 1}`)
-  //     .selectAll(`.dot-container-${i + 1}`)
-  //     .data(player)
-  //     .enter()
-  //     // make the group element container for each dot one by one (because of data)
-  //     .append("g")
-  //     .attr("class", `dot-container dot-container-${i + 1}`)
-  //     .on("mouseover", function (d) {
-  //       d3.select(this)
-  //         .style("cursor", "pointer")
-  //         .append("text")
-  //         .attr("class", "text")
-  //         .text(`Game: ${d.game}, Total: ${d.total}`)
-  //         .attr('text-anchor', 'middle')
-  //         .attr("x", d => xScale(d.game))
-  //         .attr("y", d => yScale(d.total) - 15);
-  //     })
-  //     .on("mouseout", function (d) {
-  //       d3.select(this)
-  //         .style("cursor", "none")
-  //         .selectAll(".text").remove();
-  //     })
-  //     // make the actual dot
-  //     .append("circle")
-  //     .attr("class", `dot dot-${i + 1}`)
-  //     .attr("stroke", color(i + 1))
-  //     .attr("fill", "white")
-  //     .attr("cx", function (d) { return xScale(d.game); })
-  //     .attr("cy", function (d) { return yScale(d.total); })
-  //     .attr("r", ".25%");
-  // });
-
-  // for each object (player) in the data object, make the dots and text
+  // for each object (player) in the data array, make the dots and text
   // make the group element for the dots
   linesContainer.selectAll(`.dot-group`)
     .data(data)
