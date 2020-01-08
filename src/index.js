@@ -4,7 +4,7 @@ import "./styles/index.scss";
 import "./styles/graph.scss";
 
 import { makeGraph } from './scripts/graph';
-import { searchPlayers } from './scripts/api_util';
+import { searchPlayers, searchPlayerStats } from './scripts/api_util';
 import { debounce } from 'lodash';
 
 const stats = [
@@ -121,12 +121,44 @@ function makePlayerDropdown(searchResults) {
     let playerItem = document.createElement("li");
     playerItem.classList.add("player-item");
     playerItem.setAttribute("id", id);
+    playerItem.onclick = handlePlayerClick;
     playerItem.innerHTML=playerName;
     playerList.append(playerItem);
   });
 
   // add the list items to the dropdown
   playerInputContainer.append(playerList);
+}
+
+function handlePlayerClick(e) {
+  console.log(e.target.id);
+  const seasonDropdown = document.getElementById("season-dropdown");
+  const statDropdown = document.getElementById("stat-dropdown");
+
+  // if nothing is selected for season, show a modal error?
+  // if (seasonDropdown.selectedIndex <= 0) {
+    
+  // }
+
+  // if nothing is selected for stat, show a modal error?
+  // if (statDropdown.selectedIndex <= 0) {
+
+  // }
+
+  // add to the player-names container (if data returned back successfully)
+
+  // first make sure the two dropdowns are correctly selected
+
+  if (seasonDropdown.selectedIndex > 0 && statDropdown.selectedIndex > 0) {
+    let seasonVal = seasonDropdown.options[seasonDropdown.selectedIndex].value;
+    let playerVal = e.target.id;
+
+    searchPlayerStats(seasonVal, playerVal).then(searchResults => {
+      // makePlayerDropdown(searchResults);
+      console.log(searchResults);
+    });
+  }
+
 }
 
 window.addEventListener("DOMContentLoaded", () => {
