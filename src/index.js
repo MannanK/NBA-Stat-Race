@@ -1,4 +1,5 @@
 import "./styles/reset.scss";
+import "./styles/animations.scss";
 import "./styles/index.scss";
 import "./styles/graph.scss";
 
@@ -76,10 +77,13 @@ function makeStatDropdown() {
 
 function handlePlayerInput(e) {
   let inputVal = e.currentTarget.value;
-  console.log(inputVal);
 
   if (inputVal !== "" && inputVal.length > 1) {
     debouncedSearch(inputVal);
+  } else {
+    if (document.getElementById("player-dropdown")) {
+      document.getElementById("player-dropdown").remove();
+    }
   }
 }
 
@@ -90,7 +94,27 @@ function debouncedSearch(input) {
 }
 
 function makePlayerDropdown(searchResults) {
+  const playerInputContainer = document.getElementsByClassName("search-players-input-container")[0];
 
+  let playerList = document.getElementById("player-dropdown");
+  if (playerList) {
+    playerList.innerHTML = "";
+  } else {
+    playerList = document.createElement("ul")
+    playerList.setAttribute("id", "player-dropdown");
+  }
+
+  searchResults.forEach(({ first_name, last_name, id }) => {
+    let playerName = first_name + " " + last_name;
+
+    let playerItem = document.createElement("li");
+    playerItem.classList.add("player-item");
+    playerItem.setAttribute("id", id);
+    playerItem.innerHTML=playerName;
+    playerList.append(playerItem);
+  });
+
+  playerInputContainer.append(playerList);
 }
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -102,5 +126,21 @@ window.addEventListener("DOMContentLoaded", () => {
   const playerInputEl = document.getElementById("search-players-input");
 
   playerInputEl.oninput = handlePlayerInput;
-  debouncedSearch = debounce(debouncedSearch, 500);
+
+  document.onclick = function(e) {
+    if (e.target.id !== "search-players-input" && e.target.className !== "player-item") {
+      if (document.getElementById("player-dropdown")) {
+        console.log("got here");
+        document.getElementById("player-dropdown").style.display = "none";
+      }
+    }
+  }
+
+  playerInputEl.onclick = function(e) {
+    if (document.getElementById("player-dropdown")) {
+      document.getElementById("player-dropdown").style.display = "";
+    }
+  };
+
+  debouncedSearch = debounce(debouncedSearch, 400);
 });
