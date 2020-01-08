@@ -261,13 +261,17 @@ function makeGraph() {
     .y(function (d) { return yScale(d.total); })
     .curve(d3.curveLinear);
 
+  let linesContainer = g.append('g')
+    .attr('class', 'lines-container');
+
   let color = d3.scaleOrdinal(d3.schemeCategory10);
 
-  g.append("g")
+  // change these two to g.append if want axis in front of the lines
+  linesContainer.append("g")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(xScale));
 
-  g.append("g")
+  linesContainer.append("g")
     .call(d3.axisLeft(yScale))
     .append("text")
     .attr("fill", "#000")
@@ -276,19 +280,44 @@ function makeGraph() {
     .attr("dy", "0.8em")
     .text("Total");
 
-
-
   Object.values(data).forEach((player, i) => {
-    g.append("path")
+    linesContainer.selectAll(`.line-group-${i+1}`)
+      .data([player])
+      .enter()
+      .append("g")
+      .attr("class", `line-group line-group-${i+1}`)
+      .append("path")
       .datum(player)
       .attr("class", "line")
       .attr("fill", "none")
       .attr("stroke", color(i+1))
       .attr("d", line);
 
-    g.selectAll(`.dot-${i+1}`)
+    linesContainer.selectAll(`.dot-group-${i+1}`)
+      .data([player])
+      .enter()
+      .append("g")
+      .attr("class", `dot-group dot-group-${i+1}`)
+      .selectAll(`.dot-container-${i+1}`)
       .data(player)
       .enter()
+      .append("g")
+      .attr("class", `dot-container dot-container-${i+1}`)
+      .on("mouseover", function (d) {
+        d3.select(this)
+          .style("cursor", "pointer")
+          .append("text")
+          .attr("class", "text")
+          .text(`${d.total}`)
+          .attr('text-anchor', 'middle')
+          .attr("x", d => xScale(d.game))
+          .attr("y", d => yScale(d.total)-15);
+      })
+      .on("mouseout", function (d) {
+        d3.select(this)
+          .style("cursor", "none")
+          .selectAll(".text").remove();
+      })
       .append("circle")
       .attr("class", `dot dot-${i+1}`)
       .attr("stroke", color(i+1))
@@ -297,8 +326,6 @@ function makeGraph() {
       .attr("cy", function (d) { return yScale(d.total); })
       .attr("r", ".25%");
   });
-
-  
 }
 
 module.exports = {
