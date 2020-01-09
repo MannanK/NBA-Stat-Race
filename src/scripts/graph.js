@@ -161,6 +161,28 @@ export function updateGraph(data) {
   const hoverInfoContainer = d3.selectAll('.hover-info-container');
   const hoverLine = d3.selectAll(".hover-line");
 
+  data.forEach(player => {
+    // debugger;
+    let numGamesPlayed = player.values.length-1;
+
+    if(numGamesPlayed != 82) {
+      let lastGame = numGamesPlayed+1;
+      let total = player.values[numGamesPlayed].total;
+      
+      for (let i=lastGame; i <= 82; i++) {
+        let obj = {
+          game : lastGame,
+          total
+        }
+
+        player.values.push(obj);
+        lastGame++;
+      }
+    }
+  });
+
+  console.log(data);
+
   d3.select(".hover-overlay")
     .on('mousemove', showHoverInfo.bind(this, data, xScale, yScale, hoverOverlay, hoverInfoContainer, hoverLine, height, color))
     .on('mouseout', hideHoverInfo)
@@ -177,11 +199,18 @@ function hideHoverInfo() {
 function showHoverInfo(data, xScale, yScale, hoverOverlay, hoverInfoContainer, hoverLine, height, color) {
   const game = Math.floor((xScale.invert(d3.mouse(hoverOverlay.node())[0]))-3);
 
-  console.log(data);
+  // console.log(data);
 
   data.sort((player1, player2) => {
-    return player2.values.find(h => h.game == game).total - player1.values.find(h => h.game == game).total;
+    return (
+      player2.values
+        .find(obj => obj.game == game).total -
+      player1.values
+        .find(obj => obj.game == game).total
+    );
   })
+
+  console.log(data);
 
   hoverLine.attr('stroke', 'black')
     .attr('x1', xScale(game))
@@ -198,6 +227,6 @@ function showHoverInfo(data, xScale, yScale, hoverOverlay, hoverInfoContainer, h
     .data(data)
     .enter()
     .append('div')
-    .style('color', (d,i) => color(i))
+    .style('color', (d) => color(d))
     .html(d => d.name + ': ' + d.values.find(h => h.game == game).total);
 }
