@@ -3,7 +3,7 @@ import "./styles/animations.scss";
 import "./styles/index.scss";
 import "./styles/graph.scss";
 
-import { makeGraph } from './scripts/graph';
+import { makeGraph, updateGraph } from './scripts/graph';
 import { searchPlayers, searchPlayerStats } from './scripts/api_util';
 import { debounce } from 'lodash';
 
@@ -160,6 +160,7 @@ function handlePlayerClick(e) {
       data.push(searchResults);
 
       makeGraph(data);
+      // updateGraph();
     });
   }
 }
