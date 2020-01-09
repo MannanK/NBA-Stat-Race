@@ -118,50 +118,60 @@ export function updateGraph(data) {
     // put the actual line on the screen
     .append("path")
     .attr("class", "line")
-    .merge(paths)
-    .attr("stroke", (d, i) => color(i))
-    .transition()
-    .duration(1000)
     .attr('d', d => line(d.values))
-    
-    .attr("fill", "none")
-
-  // for each object (player) in the data array, make the dots and text
-  // make the group element for the dots
-  linesContainer.selectAll(`.dot-group`)
-    .data(data)
-    .enter()
-    .append("g")
-    .attr("class", `dot-group`)
-    .selectAll(`.dot-container`)
-    .data(d => d.values)
-    .enter()
-    // make the group element container for each dot one by one (because of data)
-    .append("g")
-    .attr("class", `dot-container`)
-    .on("mouseover", function (d) {
-      d3.select(this)
-        .style("cursor", "pointer")
-        .append("text")
-        .attr("class", "text")
-        .text(`Game: ${d.game}, Total: ${d.total}`)
-        .attr('text-anchor', 'middle')
-        .attr("x", d => xScale(d.game))
-        .attr("y", d => yScale(d.total) - 15);
-    })
-    .on("mouseout", function (d) {
-      d3.select(this)
-        .style("cursor", "none")
-        .selectAll(".text").remove();
-    })
-    // make the actual dot
-    .append("circle")
-    .attr("class", `dot`)
+    .each(function (d) { d.totalLength = this.getTotalLength(); })
+    .attr("stroke-dasharray", function (d) { return d.totalLength + " " + d.totalLength; })
+    .attr("stroke-dashoffset", function (d) { return d.totalLength; })
+    .merge(paths)
+    .each(d => console.log(d))
     .attr("stroke", (d, i) => color(i))
-    .attr("fill", "white")
     .transition()
     .duration(750)
-    .attr("cx", d => xScale(d.game))
-    .attr("cy", d => yScale(d.total))
-    .attr("r", ".25%");
+    .attr('d', d => line(d.values))
+    .transition()
+    .duration(3000)
+    .ease(d3.easeLinear)
+    .attr("stroke-dashoffset", 0)
+    .attr("fill", "none");
+
+  console.log(paths);
+
+  // // for each object (player) in the data array, make the dots and text
+  // // make the group element for the dots
+  // linesContainer.selectAll(`.dot-group`)
+  //   .data(data)
+  //   .enter()
+  //   .append("g")
+  //   .attr("class", `dot-group`)
+  //   .selectAll(`.dot-container`)
+  //   .data(d => d.values)
+  //   .enter()
+  //   // make the group element container for each dot one by one (because of data)
+  //   .append("g")
+  //   .attr("class", `dot-container`)
+  //   .on("mouseover", function (d) {
+  //     d3.select(this)
+  //       .style("cursor", "pointer")
+  //       .append("text")
+  //       .attr("class", "text")
+  //       .text(`Game: ${d.game}, Total: ${d.total}`)
+  //       .attr('text-anchor', 'middle')
+  //       .attr("x", d => xScale(d.game))
+  //       .attr("y", d => yScale(d.total) - 15);
+  //   })
+  //   .on("mouseout", function (d) {
+  //     d3.select(this)
+  //       .style("cursor", "none")
+  //       .selectAll(".text").remove();
+  //   })
+  //   // make the actual dot
+  //   .append("circle")
+  //   .attr("class", `dot`)
+  //   .attr("stroke", (d, i) => color(i))
+  //   .attr("fill", "white")
+  //   .transition()
+  //   .duration(750)
+  //   .attr("cx", d => xScale(d.game))
+  //   .attr("cy", d => yScale(d.total))
+  //   .attr("r", ".25%");
 }
