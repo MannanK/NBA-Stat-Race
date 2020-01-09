@@ -121,6 +121,7 @@ h2 {
   background-color: grey;
   animation-name: dropdown;
   animation-duration: 500ms;
+  z-index: 1;
 }
 
 #player-dropdown li {

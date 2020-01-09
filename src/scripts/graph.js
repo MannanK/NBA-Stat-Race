@@ -39,14 +39,19 @@ export function makeGraph(data, update) {
   let g = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+  let hoverInfoContainerEl = document.createElement("div");
+  hoverInfoContainerEl.className = "hover-info-container";
+  document.getElementById("graph-container").appendChild(hoverInfoContainerEl);
+
+  let hoverInfoContainer = d3.selectAll(".hover-info-container");
+  let hoverLine = g.append("line").attr("class", "hover-line");
+
   let linesContainer = g.append('g')
     .attr('class', 'lines-container');
 
   let xScale = d3.scaleLinear()
     .domain([0, 82])
     .range([0, width]);
-
-  let bisectGame = d3.bisector(d => d.game).left
 
   // change these two to g.append if want axis in front of the lines
   // make the x axis group
@@ -69,31 +74,9 @@ export function makeGraph(data, update) {
 
   // --------- hover info ---------
 
-  let hoverInfoContainer = svg.append("g")
-		.attr("class", "hover-info-container")
-		.style("display", "none");
-
-  hoverInfoContainer
-    .append("line")
-    .attr("class", "hover-line")
-    .style("stroke", "#ff0000")
-		.attr("stroke-width", 1)
-		.style("shape-rendering", "crispEdges")
-		.style("opacity", 0.5)
-		.attr("y1", (-1 * height))
-		.attr("y2", 0);
-
-  hoverInfoContainer
-    .append("text")
-    .attr("class", "hover-game")
-		.attr("text-anchor", "middle")
-		.attr("font-size", 17);
-
-	let hoverOverlay = svg.append("rect")
-		.attr("class", "hover-overlay")
-		.attr("x", margin.left)
-		.attr("width", docGraphWidth - margin.right)
-		.attr("height", docGraphHeight - margin.bottom)
+  // let hoverInfoContainer = g.append("g")
+	// 	.attr("class", "hover-info-container")
+  // 	.style("display", "none");
 
   updateGraph(data);
 }
@@ -134,10 +117,6 @@ export function updateGraph(data) {
   let color = d3.scaleOrdinal(d3.schemeCategory10);
 
   let linesContainer = svg.selectAll('.lines-container');
-  linesContainer.selectAll(`.dot-group`).remove();
-  linesContainer.selectAll(`.dot-container`).remove();
-  linesContainer.selectAll(`.dot`).remove();
-
   let paths = linesContainer.selectAll(`.line`).data(data);
 
   paths.exit().remove();
@@ -148,6 +127,7 @@ export function updateGraph(data) {
   paths
     .enter()
     .append("g")
+    .attr("class", "line-container")
     .append("path")
     .attr("class", "line")
     .attr('d', d => line(d.values))
@@ -165,5 +145,59 @@ export function updateGraph(data) {
     .attr("stroke-dashoffset", 0)
     .attr("fill", "none");
 
-  hoverInfo();
+  // let names = data.map(player => player.name);
+  // hoverInfo(data, names, color, xScale, yScale);
+
+  d3.selectAll('.hover-overlay').remove();
+  let hoverOverlay = svg.append("rect")
+    .attr("class", "hover-overlay")
+    .attr("x", margin.left)
+    .attr("y", margin.bottom)
+    .attr('opacity', 0)
+    .attr("width", width)
+    .attr("height", height)
+
+  // const hoverOverlay = d3.selectAll('.hover-overlay');
+  const hoverInfoContainer = d3.selectAll('.hover-info-container');
+  const hoverLine = d3.selectAll(".hover-line");
+
+  d3.select(".hover-overlay")
+    .on('mousemove', showHoverInfo.bind(this, data, xScale, yScale, hoverOverlay, hoverInfoContainer, hoverLine, height, color))
+    .on('mouseout', hideHoverInfo)
+}
+
+function hideHoverInfo() {
+  const hoverInfoContainer = d3.select('.hover-info-container');
+  const hoverLine = d3.select(".hover-line");
+
+  if (hoverInfoContainer) hoverInfoContainer.style('display', 'none');
+  if (hoverLine) hoverLine.attr('stroke', 'none');
+}
+
+function showHoverInfo(data, xScale, yScale, hoverOverlay, hoverInfoContainer, hoverLine, height, color) {
+  const game = Math.floor((xScale.invert(d3.mouse(hoverOverlay.node())[0]))-3);
+
+  console.log(data);
+
+  data.sort((player1, player2) => {
+    return player2.values.find(h => h.game == game).total - player1.values.find(h => h.game == game).total;
+  })
+
+  hoverLine.attr('stroke', 'black')
+    .attr('x1', xScale(game))
+    .attr('x2', xScale(game))
+    .attr('y1', 0)
+    .attr('y2', height);
+
+  hoverInfoContainer
+    .html("Game" + game)
+    .style('display', 'block')
+    .style('left', `${d3.mouse(hoverOverlay.node())[0] + 20}px`)
+    .style('top', `${d3.mouse(hoverOverlay.node())[1] + 20}px`)
+    .selectAll()
+    .data(data)
+    .enter()
+    .append('div')
+    .style('color', (d,i) => color(i))
+    .html(d => d.name + ': ' + d.values.find(h => h.game == game).total);
 }

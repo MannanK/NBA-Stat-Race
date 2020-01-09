@@ -3,6 +3,7 @@
   margin-bottom: 50px;
   height: 75vh;
   border-radius: 20px;
+  position: relative;
 }
 
 // GRAPH ELEMENTS
@@ -12,8 +13,13 @@
   fill: none;
 }
 
+.hover-info-container {
+  position: absolute;
+  padding: 5px;
+}
+
 .hover-overlay {
-	fill: none;
+	background-color: rgba(0,0,0,0.4);
 	pointer-events: all;
 }
 
