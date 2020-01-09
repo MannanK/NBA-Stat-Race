@@ -8,8 +8,13 @@
 // GRAPH ELEMENTS
 
 .line {
-  stroke-width: .20%;
+  stroke-width: .40%;
   fill: none;
+}
+
+.hover-overlay {
+	fill: none;
+	pointer-events: all;
 }
 
 .text {

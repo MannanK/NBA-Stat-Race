@@ -46,11 +46,15 @@ export function makeGraph(data, update) {
     .domain([0, 82])
     .range([0, width]);
 
+  let bisectGame = d3.bisector(d => d.game).left
+
   // change these two to g.append if want axis in front of the lines
   // make the x axis group
   linesContainer.append("g")
     .attr("transform", "translate(0," + height + ")")
     .attr('class', "x-axis")
+    .transition()
+    .duration(750)
     .call(d3.axisBottom(xScale));
 
   // make the y axis group
@@ -62,6 +66,34 @@ export function makeGraph(data, update) {
     .attr("y", 10)
     .attr("dy", "0.8em")
     .text("Total");
+
+  // --------- hover info ---------
+
+  let hoverInfoContainer = svg.append("g")
+		.attr("class", "hover-info-container")
+		.style("display", "none");
+
+  hoverInfoContainer
+    .append("line")
+    .attr("class", "hover-line")
+    .style("stroke", "#ff0000")
+		.attr("stroke-width", 1)
+		.style("shape-rendering", "crispEdges")
+		.style("opacity", 0.5)
+		.attr("y1", (-1 * height))
+		.attr("y2", 0);
+
+  hoverInfoContainer
+    .append("text")
+    .attr("class", "hover-game")
+		.attr("text-anchor", "middle")
+		.attr("font-size", 17);
+
+	let hoverOverlay = svg.append("rect")
+		.attr("class", "hover-overlay")
+		.attr("x", margin.left)
+		.attr("width", docGraphWidth - margin.right)
+		.attr("height", docGraphHeight - margin.bottom)
 
   updateGraph(data);
 }
@@ -91,8 +123,8 @@ export function updateGraph(data) {
 
   svg.selectAll(".y-axis")
     .transition()
-    .duration(1000)
-    .call(d3.axisLeft(yScale))
+    .duration(750)
+    .call(d3.axisLeft(yScale));
 
   let line = d3.line()
     .x(function (d) { return xScale(d.game); })
@@ -112,10 +144,10 @@ export function updateGraph(data) {
 
   // for each object (player) in the data array, make the lines
   // make the group element for the line
+  // put the actual line on the screen
   paths
     .enter()
     .append("g")
-    // put the actual line on the screen
     .append("path")
     .attr("class", "line")
     .attr('d', d => line(d.values))
@@ -123,7 +155,6 @@ export function updateGraph(data) {
     .attr("stroke-dasharray", function (d) { return d.totalLength + " " + d.totalLength; })
     .attr("stroke-dashoffset", function (d) { return d.totalLength; })
     .merge(paths)
-    .each(d => console.log(d))
     .attr("stroke", (d, i) => color(i))
     .transition()
     .duration(750)
@@ -134,44 +165,5 @@ export function updateGraph(data) {
     .attr("stroke-dashoffset", 0)
     .attr("fill", "none");
 
-  console.log(paths);
-
-  // // for each object (player) in the data array, make the dots and text
-  // // make the group element for the dots
-  // linesContainer.selectAll(`.dot-group`)
-  //   .data(data)
-  //   .enter()
-  //   .append("g")
-  //   .attr("class", `dot-group`)
-  //   .selectAll(`.dot-container`)
-  //   .data(d => d.values)
-  //   .enter()
-  //   // make the group element container for each dot one by one (because of data)
-  //   .append("g")
-  //   .attr("class", `dot-container`)
-  //   .on("mouseover", function (d) {
-  //     d3.select(this)
-  //       .style("cursor", "pointer")
-  //       .append("text")
-  //       .attr("class", "text")
-  //       .text(`Game: ${d.game}, Total: ${d.total}`)
-  //       .attr('text-anchor', 'middle')
-  //       .attr("x", d => xScale(d.game))
-  //       .attr("y", d => yScale(d.total) - 15);
-  //   })
-  //   .on("mouseout", function (d) {
-  //     d3.select(this)
-  //       .style("cursor", "none")
-  //       .selectAll(".text").remove();
-  //   })
-  //   // make the actual dot
-  //   .append("circle")
-  //   .attr("class", `dot`)
-  //   .attr("stroke", (d, i) => color(i))
-  //   .attr("fill", "white")
-  //   .transition()
-  //   .duration(750)
-  //   .attr("cx", d => xScale(d.game))
-  //   .attr("cy", d => yScale(d.total))
-  //   .attr("r", ".25%");
+  hoverInfo();
 }
