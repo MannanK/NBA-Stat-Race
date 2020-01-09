@@ -157,10 +157,13 @@ function handlePlayerClick(e) {
     let playerVal = e.target.id;
 
     searchPlayerStats(seasonVal, statVal, playerVal).then(searchResults => {
-      data.push(searchResults);
-
-      makeGraph(data);
-      // updateGraph();
+      if (data.length !== 0) {
+        data.push(searchResults);
+        updateGraph(data);
+      } else {
+        data.push(searchResults);
+        makeGraph(data);
+      }
     });
   }
 }

@@ -102,6 +102,10 @@ export function updateGraph(data) {
   let color = d3.scaleOrdinal(d3.schemeCategory10);
 
   let linesContainer = svg.selectAll('.lines-container');
+  linesContainer.selectAll(`.dot-group`).remove();
+  linesContainer.selectAll(`.dot-container`).remove();
+  linesContainer.selectAll(`.dot`).remove();
+
   let paths = linesContainer.selectAll(`.line`).data(data);
 
   paths.exit().remove();
@@ -114,8 +118,8 @@ export function updateGraph(data) {
     // put the actual line on the screen
     .append("path")
     .attr("class", "line")
-    .attr("stroke", (d, i) => color(i))
     .merge(paths)
+    .attr("stroke", (d, i) => color(i))
     .transition()
     .duration(1000)
     .attr('d', d => line(d.values))
