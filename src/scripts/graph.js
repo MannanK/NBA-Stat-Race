@@ -41,9 +41,11 @@ export function makeGraph(data, update) {
   let g = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  let hoverInfoContainerEl = document.createElement("div");
-  hoverInfoContainerEl.className = "hover-info-container";
-  document.getElementById("graph-container").appendChild(hoverInfoContainerEl);
+  // let hoverInfoContainerEl = document.createElement("div");
+  // hoverInfoContainerEl.className = "hover-info-container";
+  // document.getElementById("graph-container").appendChild(hoverInfoContainerEl);
+
+  let hoverInfoContainerEl = d3.select('#graph-container').append("g").attr("class", "hover-info-container");
 
   let hoverInfoContainer = d3.selectAll(".hover-info-container");
   let hoverLine = g.append("line").attr("class", "hover-line").style("shape-rendering", "crispEdges");
@@ -218,6 +220,12 @@ function showHoverInfo(data, xScale, yScale, hoverOverlay, hoverInfoContainer, h
       );
     })
 
+    // let left = game >= 70 ? (
+    //   "a"
+    // ) : (
+    //   "a"
+    // );
+
     hoverLine
       .attr('stroke', 'black')
       .attr('x1', xScale(game))
@@ -226,16 +234,17 @@ function showHoverInfo(data, xScale, yScale, hoverOverlay, hoverInfoContainer, h
       .attr('y2', height);
 
     hoverInfoContainer
-      .html("Game: " + game)
-      .style('display', 'block')
-      .style('left', `${(mousePos[0] + 20) * (currentDimensions.width / width)}px`)
-      .style('top', `${(mousePos[1] + 20) * (currentDimensions.height / height)}px`)
+      .text("Game: " + game)
+      .style('color', "white")
+      .style('display', 'flex')
+      .style('left', `${(mousePos[0] + 30) * (currentDimensions.width / width)}px`)
+      .style('top', `${(mousePos[1] - 15) * (currentDimensions.height / height)}px`)
       .selectAll()
       .data(data)
       .enter()
-      .append('div')
+      .append('text')
       .style('color', (d) => color(d.originalIndex))
-      .html(d => d.name + ': ' + d.values.find(h => h.game == game).total);
+      .text(d => d.name + ': ' + d.values.find(h => h.game == game).total);
   }
 
   // xScale(game) > (width - width/4)
