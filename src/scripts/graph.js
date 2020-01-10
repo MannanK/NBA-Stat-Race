@@ -200,36 +200,41 @@ function hideHoverInfo() {
 }
 
 function showHoverInfo(data, xScale, yScale, hoverOverlay, hoverInfoContainer, hoverLine, width, height, color) {
-  const game = Math.ceil((xScale.invert(d3.mouse(hoverOverlay.node())[0]))-3);
-  const currentDimensions = hoverOverlay.node().getBoundingClientRect();
+  const overlayNode = hoverOverlay.node();
+  const mousePos = d3.mouse(overlayNode);
 
-  data.sort((player1, player2) => {
-    return (
-      player2.values
-        .find(obj => obj.game == game).total -
-      player1.values
-        .find(obj => obj.game == game).total
-    );
-  })
+  const game = Math.ceil((xScale.invert(mousePos[0] - 50)));
+  const currentDimensions = overlayNode.getBoundingClientRect();
 
-  hoverLine
-    .attr('stroke', 'black')
-    .attr('x1', xScale(game))
-    .attr('x2', xScale(game))
-    .attr('y1', 0)
-    .attr('y2', height);
+  if (game >= 0 && game <= 82) {
+    data.sort((player1, player2) => {
+      return (
+        player2.values
+          .find(obj => obj.game == game).total -
+        player1.values
+          .find(obj => obj.game == game).total
+      );
+    })
 
-  hoverInfoContainer
-    .html("Game" + game)
-    .style('display', 'block')
-    .style('left', `${(d3.mouse(hoverOverlay.node())[0] + 20) * (currentDimensions.width / width)}px`)
-    .style('top', `${(d3.mouse(hoverOverlay.node())[1] + 20) * (currentDimensions.height / height)}px`)
-    .selectAll()
-    .data(data)
-    .enter()
-    .append('div')
-    .style('color', (d) => color(d.originalIndex))
-    .html(d => d.name + ': ' + d.values.find(h => h.game == game).total);
+    hoverLine
+      .attr('stroke', 'black')
+      .attr('x1', xScale(game))
+      .attr('x2', xScale(game))
+      .attr('y1', 0)
+      .attr('y2', height);
+
+    hoverInfoContainer
+      .html("Game: " + game)
+      .style('display', 'block')
+      .style('left', `${(mousePos[0] + 20) * (currentDimensions.width / width)}px`)
+      .style('top', `${(mousePos[1] + 20) * (currentDimensions.height / height)}px`)
+      .selectAll()
+      .data(data)
+      .enter()
+      .append('div')
+      .style('color', (d) => color(d.originalIndex))
+      .html(d => d.name + ': ' + d.values.find(h => h.game == game).total);
+  }
 
   // x(d.date) > (width - width / 4)
   //   ? focus.selectAll("text.lineHoverText")

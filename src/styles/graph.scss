@@ -17,7 +17,10 @@
 
 .hover-info-container {
   position: absolute;
-  padding: 5px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
 }
 
 .hover-overlay {
