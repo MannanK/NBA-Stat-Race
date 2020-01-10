@@ -238,10 +238,10 @@ function showHoverInfo(data, xScale, yScale, hoverOverlay, hoverInfoContainer, h
       .style('color', (d) => color(d.originalIndex))
       .text(d => d.name + ': ' + d.values.find(h => h.game == game).total);
 
-    let offsetWidth = hoverInfoContainer.node().offsetWidth;
+    let hoverInfoContainerWidth = hoverInfoContainer.node().offsetWidth;
 
-    let left = game >= 70 ? (
-      ((mousePos[0] - offsetWidth) - 20) * (currentDimensions.width / width)
+    let left = (mousePos[0] + hoverInfoContainerWidth) > width ? (
+      ((mousePos[0] - hoverInfoContainerWidth) - 20) * (currentDimensions.width / width)
     ) : (
       (mousePos[0] + 30) * (currentDimensions.width / width)
     );
