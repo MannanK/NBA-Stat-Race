@@ -182,6 +182,8 @@ export function updateGraph(data) {
         lastGame++;
       }
     }
+
+    newData[idx].originalIndex = idx;
   });
 
   d3.select(".hover-overlay")
@@ -226,7 +228,7 @@ function showHoverInfo(data, xScale, yScale, hoverOverlay, hoverInfoContainer, h
     .data(data)
     .enter()
     .append('div')
-    .style('color', (d, i) => color(i))
+    .style('color', (d) => color(d.originalIndex))
     .html(d => d.name + ': ' + d.values.find(h => h.game == game).total);
 
   // x(d.date) > (width - width / 4)

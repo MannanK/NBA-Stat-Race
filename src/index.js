@@ -133,7 +133,6 @@ function makePlayerDropdown(searchResults) {
 }
 
 function handlePlayerClick(e) {
-  console.log(e.target.id);
   const seasonDropdown = document.getElementById("season-dropdown");
   const statDropdown = document.getElementById("stat-dropdown");
 
@@ -173,8 +172,6 @@ function handlePlayerClick(e) {
         let svgWidth = document.getElementsByTagName("svg")[0].clientWidth;
         let svgHeight = document.getElementsByTagName("svg")[0].clientHeight;
 
-        console.log(svgWidth);
-        console.log(svgHeight);
         document.getElementById("graph-container").style.height = `${svgHeight}px`;
         document.getElementById("graph-container").style.width = `${svgWidth}px`;
       }
