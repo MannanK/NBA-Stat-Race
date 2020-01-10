@@ -220,12 +220,6 @@ function showHoverInfo(data, xScale, yScale, hoverOverlay, hoverInfoContainer, h
       );
     })
 
-    // let left = game >= 70 ? (
-    //   "a"
-    // ) : (
-    //   "a"
-    // );
-
     hoverLine
       .attr('stroke', 'black')
       .attr('x1', xScale(game))
@@ -237,14 +231,24 @@ function showHoverInfo(data, xScale, yScale, hoverOverlay, hoverInfoContainer, h
       .text("Game: " + game)
       .style('color', "white")
       .style('display', 'flex')
-      .style('left', `${(mousePos[0] + 30) * (currentDimensions.width / width)}px`)
-      .style('top', `${(mousePos[1] - 15) * (currentDimensions.height / height)}px`)
       .selectAll()
       .data(data)
       .enter()
       .append('text')
       .style('color', (d) => color(d.originalIndex))
       .text(d => d.name + ': ' + d.values.find(h => h.game == game).total);
+
+    let offsetWidth = hoverInfoContainer.node().offsetWidth;
+
+    let left = game >= 70 ? (
+      ((mousePos[0] - offsetWidth) - 20) * (currentDimensions.width / width)
+    ) : (
+      (mousePos[0] + 30) * (currentDimensions.width / width)
+    );
+
+    hoverInfoContainer
+      .style('left', `${left}px`)
+      .style('top', `${(mousePos[1] - 15) * (currentDimensions.height / height)}px`)
   }
 
   // xScale(game) > (width - width/4)

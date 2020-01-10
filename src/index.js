@@ -163,23 +163,44 @@ function handlePlayerClick(e) {
         data.push(searchResults);
         makeGraph(data);
       }
+
+      updatePlayerNames();
     });
 
-    window.addEventListener('resize', resize);
-
-    function resize() {
-      if (document.getElementsByTagName("svg").length === 1) {
-        let svgWidth = document.getElementsByTagName("svg")[0].clientWidth;
-        let svgHeight = document.getElementsByTagName("svg")[0].clientHeight;
-
-        document.getElementById("graph-container").style.height = `${svgHeight}px`;
-        document.getElementById("graph-container").style.width = `${svgWidth}px`;
-      }
-    }
+    
   }
 }
 
+function updatePlayerNames() {
+  const playerNamesContainer = document.getElementsByClassName("player-names-container")[0];
+  while (playerNamesContainer.firstChild) {
+    playerNamesContainer.removeChild(playerNamesContainer.firstChild);
+  }
+
+  data.forEach((player, i) => {
+    console.log(player);
+    let playerNameContainer = document.createElement("div");
+    playerNameContainer.classList.add("player-name-container");
+    playerNameContainer.setAttribute("id", `player-name-${i}`);
+    // playerNameContainer.onclick = handlePlayerClick;
+    playerNameContainer.innerHTML = player.name;
+    playerNamesContainer.append(playerNameContainer);
+  });
+}
+
 window.addEventListener("DOMContentLoaded", () => {
+  window.addEventListener('resize', resize);
+
+  function resize() {
+    if (document.getElementsByTagName("svg").length === 1) {
+      let svgWidth = document.getElementsByTagName("svg")[0].clientWidth;
+      let svgHeight = document.getElementsByTagName("svg")[0].clientHeight;
+
+      document.getElementById("graph-container").style.height = `${svgHeight}px`;
+      document.getElementById("graph-container").style.width = `${svgWidth}px`;
+    }
+  }
+
   makeSeasonDropdown();
   makeStatDropdown();
 
