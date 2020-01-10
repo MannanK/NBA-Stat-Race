@@ -1,3 +1,5 @@
+import { merge } from 'lodash';
+
 const margin = { top: 50, right: 50, bottom: 50, left: 50 };
 
 function resizingFunction(svg) {
@@ -161,8 +163,9 @@ export function updateGraph(data) {
   const hoverInfoContainer = d3.selectAll('.hover-info-container');
   const hoverLine = d3.selectAll(".hover-line");
 
-  data.forEach(player => {
-    // debugger;
+  let newData = data.map(player => merge({}, player));
+
+  data.forEach((player, idx) => {
     let numGamesPlayed = player.values.length-1;
 
     if(numGamesPlayed != 82) {
@@ -175,16 +178,14 @@ export function updateGraph(data) {
           total
         }
 
-        player.values.push(obj);
+        newData[idx].values.push(obj);
         lastGame++;
       }
     }
   });
 
-  console.log(data);
-
   d3.select(".hover-overlay")
-    .on('mousemove', showHoverInfo.bind(this, data, xScale, yScale, hoverOverlay, hoverInfoContainer, hoverLine, width, height, color))
+    .on('mousemove', showHoverInfo.bind(this, newData, xScale, yScale, hoverOverlay, hoverInfoContainer, hoverLine, width, height, color))
     .on('mouseout', hideHoverInfo)
 }
 
@@ -200,8 +201,6 @@ function showHoverInfo(data, xScale, yScale, hoverOverlay, hoverInfoContainer, h
   const game = Math.floor((xScale.invert(d3.mouse(hoverOverlay.node())[0]))-3);
   const currentDimensions = hoverOverlay.node().getBoundingClientRect();
 
-  // console.log(data);
-
   data.sort((player1, player2) => {
     return (
       player2.values
@@ -210,8 +209,6 @@ function showHoverInfo(data, xScale, yScale, hoverOverlay, hoverInfoContainer, h
         .find(obj => obj.game == game).total
     );
   })
-
-  console.log(data);
 
   hoverLine
     .attr('stroke', 'black')
