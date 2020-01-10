@@ -44,7 +44,7 @@ export function makeGraph(data, update) {
   document.getElementById("graph-container").appendChild(hoverInfoContainerEl);
 
   let hoverInfoContainer = d3.selectAll(".hover-info-container");
-  let hoverLine = g.append("line").attr("class", "hover-line");
+  let hoverLine = g.append("line").attr("class", "hover-line").style("shape-rendering", "crispEdges");
 
   let linesContainer = g.append('g')
     .attr('class', 'lines-container');
@@ -184,7 +184,7 @@ export function updateGraph(data) {
   console.log(data);
 
   d3.select(".hover-overlay")
-    .on('mousemove', showHoverInfo.bind(this, data, xScale, yScale, hoverOverlay, hoverInfoContainer, hoverLine, height, color))
+    .on('mousemove', showHoverInfo.bind(this, data, xScale, yScale, hoverOverlay, hoverInfoContainer, hoverLine, width, height, color))
     .on('mouseout', hideHoverInfo)
 }
 
@@ -196,8 +196,9 @@ function hideHoverInfo() {
   if (hoverLine) hoverLine.attr('stroke', 'none');
 }
 
-function showHoverInfo(data, xScale, yScale, hoverOverlay, hoverInfoContainer, hoverLine, height, color) {
+function showHoverInfo(data, xScale, yScale, hoverOverlay, hoverInfoContainer, hoverLine, width, height, color) {
   const game = Math.floor((xScale.invert(d3.mouse(hoverOverlay.node())[0]))-3);
+  const currentDimensions = hoverOverlay.node().getBoundingClientRect();
 
   // console.log(data);
 
@@ -212,7 +213,8 @@ function showHoverInfo(data, xScale, yScale, hoverOverlay, hoverInfoContainer, h
 
   console.log(data);
 
-  hoverLine.attr('stroke', 'black')
+  hoverLine
+    .attr('stroke', 'black')
     .attr('x1', xScale(game))
     .attr('x2', xScale(game))
     .attr('y1', 0)
@@ -221,12 +223,20 @@ function showHoverInfo(data, xScale, yScale, hoverOverlay, hoverInfoContainer, h
   hoverInfoContainer
     .html("Game" + game)
     .style('display', 'block')
-    .style('left', `${d3.mouse(hoverOverlay.node())[0] + 20}px`)
-    .style('top', `${d3.mouse(hoverOverlay.node())[1] + 20}px`)
+    .style('left', `${(d3.mouse(hoverOverlay.node())[0] + 20) * (currentDimensions.width / width)}px`)
+    .style('top', `${(d3.mouse(hoverOverlay.node())[1] + 20) * (currentDimensions.height / height)}px`)
     .selectAll()
     .data(data)
     .enter()
     .append('div')
-    .style('color', (d) => color(d))
+    .style('color', (d, i) => color(i))
     .html(d => d.name + ': ' + d.values.find(h => h.game == game).total);
+
+  // x(d.date) > (width - width / 4)
+  //   ? focus.selectAll("text.lineHoverText")
+  //     .attr("text-anchor", "end")
+  //     .attr("dx", -10)
+  //   : focus.selectAll("text.lineHoverText")
+  //     .attr("text-anchor", "start")
+  //     .attr("dx", 10)
 }
