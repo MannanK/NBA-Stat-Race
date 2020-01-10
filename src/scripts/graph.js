@@ -200,10 +200,12 @@ function hideHoverInfo() {
 }
 
 function showHoverInfo(data, xScale, yScale, hoverOverlay, hoverInfoContainer, hoverLine, width, height, color) {
+  const bisector = d3.bisector(function (d) { return d.game; }).left;
   const overlayNode = hoverOverlay.node();
   const mousePos = d3.mouse(overlayNode);
 
-  const game = Math.ceil((xScale.invert(mousePos[0] - 50)));
+  let x = xScale.invert(mousePos[0] - 50);
+  const game = bisector(data[0].values, x, 1);
   const currentDimensions = overlayNode.getBoundingClientRect();
 
   if (game >= 0 && game <= 82) {
@@ -236,11 +238,11 @@ function showHoverInfo(data, xScale, yScale, hoverOverlay, hoverInfoContainer, h
       .html(d => d.name + ': ' + d.values.find(h => h.game == game).total);
   }
 
-  // x(d.date) > (width - width / 4)
-  //   ? focus.selectAll("text.lineHoverText")
+  // xScale(game) > (width - width/4)
+  //   ? d3.selectAll(".hover-info-container")
   //     .attr("text-anchor", "end")
   //     .attr("dx", -10)
-  //   : focus.selectAll("text.lineHoverText")
+  //   : d3.selectAll(".hover-info-container")
   //     .attr("text-anchor", "start")
   //     .attr("dx", 10)
 }
