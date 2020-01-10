@@ -37,27 +37,27 @@ function makeSeasonDropdown() {
   let startYear = 1979;
   let end = new Date().getFullYear();
   let options = "<option selected disabled>Please select a season</option>";
-  
+
   for (let year = startYear; year <= end; year++) {
     options += `<option value="${year}">` + year + "</option>";
   }
 
   dropdownEl.innerHTML = options;
 
-  dropdownEl.onchange = function() {
+  dropdownEl.onchange = function () {
     // to reset the stat dropdown
     // document.getElementById("stat-dropdown").selectedIndex = 0;
 
     // call the overall fetch function to make a request to the API
-      // again, as long as all fields are still inputed correctly?
-      // check this inside the function using document functions, gets the
-      // inputs from all 3 fields (and existing players already added) and if
-      // all are present then make the API request
+    // again, as long as all fields are still inputed correctly?
+    // check this inside the function using document functions, gets the
+    // inputs from all 3 fields (and existing players already added) and if
+    // all are present then make the API request
 
     //apiFunctionHere();
 
     // reset the players as soon as the season dropdown selection
-      // changes?
+    // changes?
   };
 }
 
@@ -105,7 +105,7 @@ function makePlayerDropdown(searchResults) {
   const playerInputContainer = document.getElementsByClassName("search-players-input-container")[0];
 
   let playerList = document.getElementById("player-dropdown");
-  
+
   // if the dropdown currently exists (user added more letters), empty it out
   if (playerList) {
     playerList.innerHTML = "";
@@ -124,7 +124,7 @@ function makePlayerDropdown(searchResults) {
     playerItem.classList.add("player-item");
     playerItem.setAttribute("id", id);
     playerItem.onclick = handlePlayerClick;
-    playerItem.innerHTML=playerName;
+    playerItem.innerHTML = playerName;
     playerList.append(playerItem);
   });
 
@@ -139,7 +139,7 @@ function handlePlayerClick(e) {
 
   // if nothing is selected for season, show a modal error?
   // if (seasonDropdown.selectedIndex <= 0) {
-    
+
   // }
 
   // if nothing is selected for stat, show a modal error?
@@ -165,6 +165,20 @@ function handlePlayerClick(e) {
         makeGraph(data);
       }
     });
+
+    window.addEventListener('resize', resize);
+
+    function resize() {
+      if (document.getElementsByTagName("svg").length === 1) {
+        let svgWidth = document.getElementsByTagName("svg")[0].clientWidth;
+        let svgHeight = document.getElementsByTagName("svg")[0].clientHeight;
+
+        console.log(svgWidth);
+        console.log(svgHeight);
+        document.getElementById("graph-container").style.height = `${svgHeight}px`;
+        document.getElementById("graph-container").style.width = `${svgWidth}px`;
+      }
+    }
   }
 }
 
@@ -178,8 +192,8 @@ window.addEventListener("DOMContentLoaded", () => {
   playerInputEl.oninput = handlePlayerInput;
 
   // if user clicks outside of the dropdown or input field, hide the dropdown
-    // if it is currently on the page
-  document.onclick = function(e) {
+  // if it is currently on the page
+  document.onclick = function (e) {
     if (e.target.id !== "search-players-input" && e.target.className !== "player-item") {
       if (document.getElementById("player-dropdown")) {
         document.getElementById("player-dropdown").style.display = "none";
@@ -188,9 +202,9 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   // if user clicks on the input field, show the dropdown if it is currently
-    // hidden
+  // hidden
   // allows us to not send out another API call since input hasn't changed
-  playerInputEl.onclick = function(e) {
+  playerInputEl.onclick = function (e) {
     if (document.getElementById("player-dropdown")) {
       document.getElementById("player-dropdown").style.display = "";
     }

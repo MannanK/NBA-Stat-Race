@@ -35,8 +35,8 @@ export function makeGraph(data, update) {
   // From now on, all subsequent code can just use 'width' and 'height'
   let svg = d3.select('#graph-container').append("svg")
     .attr('width', docGraphWidth)
-    .attr('height', docGraphHeight)
-    .call(resizingFunction);
+    .attr('height', docGraphHeight);
+    // .call(resizingFunction);
 
   let g = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -198,7 +198,7 @@ function hideHoverInfo() {
 }
 
 function showHoverInfo(data, xScale, yScale, hoverOverlay, hoverInfoContainer, hoverLine, width, height, color) {
-  const game = Math.floor((xScale.invert(d3.mouse(hoverOverlay.node())[0]))-3);
+  const game = Math.ceil((xScale.invert(d3.mouse(hoverOverlay.node())[0]))-3);
   const currentDimensions = hoverOverlay.node().getBoundingClientRect();
 
   data.sort((player1, player2) => {
