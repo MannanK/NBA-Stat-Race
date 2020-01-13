@@ -21,6 +21,7 @@ body {
   font-size: 40px;
   color: white;
   margin-bottom: 35px;
+  animation: fade-in 1200ms ease-in;
 }
 
 // TOP ROW, BOTTOM ROW
@@ -51,6 +52,17 @@ body {
   cursor: pointer;
   border: none;
   padding: 0px 7px;
+}
+
+.not-selected-error {
+  background-color: rgb(175, 42, 42);
+}
+
+.not-selected-error.animation {
+  animation: error-shake 400ms linear;
+  -moz-animation: error-shake 400ms linear;
+  -o-animation: error-shake 400ms linear;
+  -webkit-animation: error-shake 400ms linear;
 }
 
 // RIGHT TOP ROW
@@ -89,7 +101,7 @@ body {
 
 #player-dropdown {
   background-color: grey;
-  animation-name: dropdown;
+  animation-name: fade-in;
   animation-duration: 500ms;
   z-index: 1;
   cursor: pointer;

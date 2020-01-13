@@ -44,6 +44,10 @@ function makeSeasonDropdown() {
 
   dropdownEl.innerHTML = options;
 
+  dropdownEl.onclick = function () {
+    dropdownEl.classList.remove("not-selected-error");
+  };
+
   dropdownEl.onchange = function () {
     // to reset the stat dropdown
     // document.getElementById("stat-dropdown").selectedIndex = 0;
@@ -73,6 +77,10 @@ function makeStatDropdown() {
 
     options += `<option value="${key}">` + val + "</option>";
   });
+
+  dropdownEl.onclick = function () {
+    dropdownEl.classList.remove("not-selected-error");
+  };
 
   dropdownEl.innerHTML = options;
 }
@@ -135,6 +143,7 @@ function makePlayerDropdown(searchResults) {
 function handlePlayerClick(e) {
   const seasonDropdown = document.getElementById("season-dropdown");
   const statDropdown = document.getElementById("stat-dropdown");
+  const playerDropdown = document.getElementById("player-dropdown");
 
   // if nothing is selected for season, show a modal error?
   // if (seasonDropdown.selectedIndex <= 0) {
@@ -156,7 +165,7 @@ function handlePlayerClick(e) {
     let playerVal = e.target.id;
 
     searchPlayerStats(seasonVal, statVal, playerVal).then(searchResults => {
-      document.getElementById("player-dropdown").remove();
+      playerDropdown.remove();
       document.getElementById("search-players-input").value = "";
 
       if (data.length !== 0) {
@@ -169,8 +178,20 @@ function handlePlayerClick(e) {
 
       updatePlayerNames();
     });
+  } else {
+    if (seasonDropdown.selectedIndex === 0) {
+      seasonDropdown.classList.add("not-selected-error", "animation");
+      setTimeout(() => {
+        seasonDropdown.classList.remove("animation");
+      }, 400);
+    }
 
-    
+    if (statDropdown.selectedIndex === 0) {
+      statDropdown.classList.add("not-selected-error", "animation");
+      setTimeout(() => {
+        statDropdown.classList.remove("animation");
+      }, 400);
+    }
   }
 }
 
