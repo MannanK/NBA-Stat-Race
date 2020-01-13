@@ -45,7 +45,11 @@ export function makeGraph(data, update) {
   // hoverInfoContainerEl.className = "hover-info-container";
   // document.getElementById("graph-container").appendChild(hoverInfoContainerEl);
 
-  let hoverInfoContainerEl = d3.select('#graph-container').append("g").attr("class", "hover-info-container");
+  let hoverInfoContainerEl = d3
+    .select('#graph-container')
+    .append("g")
+    .attr("class", "hover-info-container")
+    .style('display', 'none');
 
   let hoverInfoContainer = d3.selectAll(".hover-info-container");
   let hoverLine = g.append("line").attr("class", "hover-line").style("shape-rendering", "crispEdges");

@@ -156,6 +156,9 @@ function handlePlayerClick(e) {
     let playerVal = e.target.id;
 
     searchPlayerStats(seasonVal, statVal, playerVal).then(searchResults => {
+      document.getElementById("player-dropdown").remove();
+      document.getElementById("search-players-input").value = "";
+
       if (data.length !== 0) {
         data.push(searchResults);
         updateGraph(data);
