@@ -225,7 +225,7 @@ function showHoverInfo(data, xScale, yScale, hoverOverlay, hoverInfoContainer, h
     })
 
     hoverLine
-      .attr('stroke', 'black')
+      .attr('stroke', 'white')
       .attr('x1', xScale(game))
       .attr('x2', xScale(game))
       .attr('y1', 0)
