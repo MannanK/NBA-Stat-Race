@@ -35,7 +35,11 @@ export function searchPlayerStats(season, stat, playerId) {
   return fetch(SEARCH_PLAYER_STATS_URL(season, playerId))
     .then(resp => resp.json())
     .then(data => {
-      return parseSearchPlayerStats(data, stat);
+      if (data.data.length !== 0) {
+        return parseSearchPlayerStats(data, stat);
+      } else {
+        return null;
+      }
     })
     .catch(error => console.log(error));
 }

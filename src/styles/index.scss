@@ -1,6 +1,7 @@
 // WHOLE PAGE CONTENT
 body {
   background-color: #1c1c1c;
+  font-family: 'Signika', sans-serif;
 }
 
 .content {
@@ -20,6 +21,7 @@ body {
   font-size: 40px;
   color: white;
   margin-bottom: 35px;
+  animation: fade-in 1200ms ease-in;
 }
 
 // TOP ROW, BOTTOM ROW
@@ -31,31 +33,43 @@ body {
   margin-bottom: 35px;
 }
 
+.top-row *, .bottom-row * {
+  border-radius: 7px;
+}
+
 // LEFT TOP ROW
 
 .left-top-row {
   display: flex;
-  width: 33vw;
+  width: 35%;
   justify-content: space-between;
 }
 
-// SEASON DROPDOWN
+// SEASON DROPDOWN, STAT DROPDOWN
 
-#season-dropdown {
-  width: 15vw;
+#season-dropdown, #stat-dropdown {
+  width: 45%;
+  cursor: pointer;
+  border: none;
+  padding: 0px 7px;
 }
 
-// STAT DROPDOWN
+.not-selected-error {
+  background-color: rgb(175, 42, 42);
+}
 
-#stat-dropdown {
-  width: 15vw;
+.not-selected-error.animation {
+  animation: error-shake 400ms linear;
+  -moz-animation: error-shake 400ms linear;
+  -o-animation: error-shake 400ms linear;
+  -webkit-animation: error-shake 400ms linear;
 }
 
 // RIGHT TOP ROW
 
 .right-top-row {
   display: flex;
-  width: 5vw;
+  width: 5%;
   min-width: fit-content;
 }
 
@@ -63,6 +77,9 @@ body {
 
 .glossary-button {
   width: 100%;
+  cursor: pointer;
+  border: none;
+  padding: 0px 7px;
 }
 
 // SEARCH PLAYERS INPUT & DROPDOWN
@@ -70,7 +87,7 @@ body {
 .search-players-input-container {
   display: flex;
   flex-direction: column;
-  width: 18vw;
+  width: 19.5%;
   margin-right: 7vw;
   position: relative;
 }
@@ -78,13 +95,16 @@ body {
 #search-players-input {
   min-height: 100%;
   box-sizing: border-box;
+  border: none;
+  padding: 10px;
 }
 
 #player-dropdown {
   background-color: grey;
-  animation-name: dropdown;
+  animation-name: fade-in;
   animation-duration: 500ms;
   z-index: 1;
+  cursor: pointer;
 }
 
 #player-dropdown li {
@@ -100,7 +120,7 @@ body {
 // PLAYER NAMES
 
 .player-names-container {
-  width: 65.5vw;
+  width: 75.5%;
   display: flex;
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
@@ -109,6 +129,11 @@ body {
   box-sizing: border-box;
   height: 5vh;
   align-self: center;
+  justify-content: space-evenly;
+
+  @media only screen and (max-device-width: 500px)  { 
+    font-size: 10px;
+  }
 }
 
 // FOOTER

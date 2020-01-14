@@ -2,6 +2,7 @@ import "./styles/reset.scss";
 import "./styles/animations.scss";
 import "./styles/index.scss";
 import "./styles/graph.scss";
+import "./styles/modals.scss";
 
 import { makeGraph, updateGraph } from './scripts/graph';
 import { searchPlayers, searchPlayerStats } from './scripts/api_util';
@@ -34,15 +35,19 @@ let data = [];
 function makeSeasonDropdown() {
   const dropdownEl = document.getElementById("season-dropdown");
 
-  let startYear = 1979;
+  let startYear = 1990;
   let end = new Date().getFullYear();
   let options = "<option selected disabled>Please select a season</option>";
 
-  for (let year = startYear; year <= end; year++) {
+  for (let year = startYear; year < end; year++) {
     options += `<option value="${year}">` + year + "</option>";
   }
 
   dropdownEl.innerHTML = options;
+
+  dropdownEl.onclick = function () {
+    dropdownEl.classList.remove("not-selected-error");
+  };
 
   dropdownEl.onchange = function () {
     // to reset the stat dropdown
@@ -73,6 +78,10 @@ function makeStatDropdown() {
 
     options += `<option value="${key}">` + val + "</option>";
   });
+
+  dropdownEl.onclick = function () {
+    dropdownEl.classList.remove("not-selected-error");
+  };
 
   dropdownEl.innerHTML = options;
 }
@@ -135,6 +144,8 @@ function makePlayerDropdown(searchResults) {
 function handlePlayerClick(e) {
   const seasonDropdown = document.getElementById("season-dropdown");
   const statDropdown = document.getElementById("stat-dropdown");
+  const playerDropdown = document.getElementById("player-dropdown");
+  const playerInputEl = document.getElementById("search-players-input");
 
   // if nothing is selected for season, show a modal error?
   // if (seasonDropdown.selectedIndex <= 0) {
@@ -155,19 +166,47 @@ function handlePlayerClick(e) {
     let statVal = statDropdown.options[statDropdown.selectedIndex].value;
     let playerVal = e.target.id;
 
-    searchPlayerStats(seasonVal, statVal, playerVal).then(searchResults => {
-      if (data.length !== 0) {
-        data.push(searchResults);
-        updateGraph(data);
-      } else {
-        data.push(searchResults);
-        makeGraph(data);
-      }
+    searchPlayerStats(seasonVal, statVal, playerVal)
+      .then(searchResults => {
+        if (searchResults !== null) {
+          playerDropdown.remove();
+          playerInputEl.value = "";
 
-      updatePlayerNames();
-    });
+          if (data.length !== 0) {
+            data.push(searchResults);
+            updateGraph(data);
+          } else {
+            data.push(searchResults);
+            makeGraph(data);
+          }
 
-    
+          updatePlayerNames();
+        } else {
+          let playerName = e.target.innerHTML;
+          playerDropdown.remove();
+          playerInputEl.value = "";
+          
+          makeModal("no-player-in-season", playerName);
+        }
+      });
+  } else {
+    if (seasonDropdown.selectedIndex === 0) {
+      seasonDropdown.classList.add("not-selected-error", "animation");
+      setTimeout(() => {
+        seasonDropdown.classList.remove("animation");
+      }, 400);
+    }
+
+    if (statDropdown.selectedIndex === 0) {
+      statDropdown.classList.add("not-selected-error", "animation");
+      setTimeout(() => {
+        statDropdown.classList.remove("animation");
+      }, 400);
+    }
+
+    if (playerDropdown) {
+      playerDropdown.style.display = "none";
+    }
   }
 }
 
@@ -186,6 +225,33 @@ function updatePlayerNames() {
     playerNameContainer.innerHTML = player.name;
     playerNamesContainer.append(playerNameContainer);
   });
+}
+
+function makeModal(type, playerName) {
+  if (type === "no-player-in-season") {
+    const modalBackground = document.createElement('div');
+    modalBackground.className = type;
+    document.body.appendChild(modalBackground);
+
+    // const mainContentEl = document.getElementsByClassName("content")[0];
+    const modalPopup = document.createElement('section');
+    modalPopup.className = "no-player-in-season-popup";
+
+    const popupText = document.createElement('strong');
+    popupText.textContent = `${playerName} didn't play in this season!`;
+    modalPopup.appendChild(popupText);
+
+    const popupButton = document.createElement('button');
+    popupButton.className = "no-player-in-season-button";
+    popupButton.innerHTML = '<i class="fas fa-window-close"></i>';
+    modalPopup.appendChild(popupButton);
+
+    popupButton.onclick = function () {
+      modalBackground.remove();
+    }
+
+    modalBackground.appendChild(modalPopup);
+  }
 }
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -217,7 +283,7 @@ window.addEventListener("DOMContentLoaded", () => {
         document.getElementById("player-dropdown").style.display = "none";
       }
     }
-  }
+  };
 
   // if user clicks on the input field, show the dropdown if it is currently
   // hidden

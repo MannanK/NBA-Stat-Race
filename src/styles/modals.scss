@@ -1,0 +1,39 @@
+.no-player-in-season {
+  background: rgba(0, 0, 0, 0.6);
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: auto !important;
+}
+
+.no-player-in-season-popup {
+  position: relative;
+  top: 45%;
+  margin: 0 auto;
+  width: fit-content;
+  background-color: white;
+  height: 12%;
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 20px;
+}
+
+.no-player-in-season-button {
+  border: none;
+  padding: 0;
+  background: none;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 25px;
+  outline: none;
+}
+
+.no-player-in-season-button:hover {
+  cursor: pointer;
+}
