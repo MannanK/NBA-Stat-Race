@@ -31,6 +31,8 @@ const stats = [
 
 let data = [];
 let resetData = false;
+let previousSeasonVal = 0;
+let previousStatVal = 0;
 
 // make the season dropdown menu
 function makeSeasonDropdown() {
@@ -49,31 +51,6 @@ function makeSeasonDropdown() {
   dropdownEl.onclick = function () {
     dropdownEl.classList.remove("not-selected-error");
   };
-
-  let previousVal = dropdownEl.selectedIndex;
-
-  dropdownEl.onfocus = function () {
-    previousVal = dropdownEl.selectedIndex;
-  };
-
-  dropdownEl.onchange = function () {
-    const graphContainer = document.getElementById("graph-container");
-    const playerNamesContainer = document.getElementsByClassName("player-names-container")[0];
-    const lineContainer = document.getElementsByClassName("line-container");
-
-    if (dropdownEl.selectedIndex === previousVal) {
-      graphContainer.classList.remove("graph-glow");
-      playerNamesContainer.classList.remove("graph-glow");
-      resetData = false;
-    } else {
-      // const statDropdown = document.getElementById("stat-dropdown");
-      if (lineContainer.length !== 0) {
-        graphContainer.classList.add("graph-glow");
-        playerNamesContainer.classList.add("graph-glow");
-        resetData = true;
-      }
-    }
-  };
 }
 
 // make the stat dropdown menu
@@ -89,11 +66,47 @@ function makeStatDropdown() {
     options += `<option value="${key}">` + val + "</option>";
   });
 
+  dropdownEl.innerHTML = options;
+
   dropdownEl.onclick = function () {
     dropdownEl.classList.remove("not-selected-error");
   };
+}
 
-  dropdownEl.innerHTML = options;
+function checkGraphGlow() {
+  const seasonDropdown = document.getElementById("season-dropdown");
+  const statDropdown = document.getElementById("stat-dropdown");
+  const graphContainer = document.getElementById("graph-container");
+  const playerNamesContainer = document.getElementsByClassName("player-names-container")[0];
+  const lineContainer = document.getElementsByClassName("line-container");
+
+  seasonDropdown.onchange = function () {
+    if (seasonDropdown.selectedIndex === previousSeasonVal && statDropdown.selectedIndex === previousStatVal) {
+      graphContainer.classList.remove("graph-glow");
+      playerNamesContainer.classList.remove("graph-glow");
+      resetData = false;
+    } else {
+      if (lineContainer.length !== 0) {
+        graphContainer.classList.add("graph-glow");
+        playerNamesContainer.classList.add("graph-glow");
+        resetData = true;
+      }
+    }
+  };
+
+  statDropdown.onchange = function () {
+    if (statDropdown.selectedIndex === previousStatVal && seasonDropdown.selectedIndex === previousSeasonVal) {
+      graphContainer.classList.remove("graph-glow");
+      playerNamesContainer.classList.remove("graph-glow");
+      resetData = false;
+    } else {
+      if (lineContainer.length !== 0) {
+        graphContainer.classList.add("graph-glow");
+        playerNamesContainer.classList.add("graph-glow");
+        resetData = true;
+      }
+    }
+  };
 }
 
 // check if the user has entered valid input
@@ -131,7 +144,7 @@ function makePlayerDropdown(searchResults) {
   }
   // otherwise, make a new ul for the dropdown
   else {
-    playerList = document.createElement("ul")
+    playerList = document.createElement("ul");
     playerList.setAttribute("id", "player-dropdown");
   }
 
@@ -173,6 +186,8 @@ function handlePlayerClick(e) {
           }
 
           playerDropdown.remove();
+          previousSeasonVal = seasonDropdown.selectedIndex;
+          previousStatVal = statDropdown.selectedIndex;
           graphContainer.classList.remove("graph-glow");
           playerNamesContainer.classList.remove("graph-glow");
           playerInputEl.value = "";
@@ -246,7 +261,7 @@ function makeModal(type, playerName) {
 
     popupButton.onclick = function () {
       modalBackground.remove();
-    }
+    };
 
     modalBackground.appendChild(modalPopup);
   }
@@ -267,6 +282,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   makeSeasonDropdown();
   makeStatDropdown();
+  checkGraphGlow();
 
   const playerInputEl = document.getElementById("search-players-input");
 

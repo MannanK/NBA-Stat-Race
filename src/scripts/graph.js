@@ -77,7 +77,8 @@ export function makeGraph(data, initial) {
       .attr("transform", "rotate(-90)")
       .attr("y", 10)
       .attr("dy", "0.8em")
-      .text("Total");
+      .text("Total")
+      .attr("fill", "white");
 
     updateGraph(data, initial);
   }

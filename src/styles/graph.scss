@@ -20,8 +20,12 @@
   fill: none;
 }
 
-.x-axis, .y-axis {
-  font: 12px sans-serif;
+.x-axis, .y-axis, .y-axis * {
+  font: 14px sans-serif;
+
+  @media (max-width: 500px) {
+    font-size: 12px;
+  }
 }
 
 .hover-info-container {
