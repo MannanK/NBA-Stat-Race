@@ -50,19 +50,10 @@ function makeSeasonDropdown() {
   };
 
   dropdownEl.onchange = function () {
-    // to reset the stat dropdown
-    // document.getElementById("stat-dropdown").selectedIndex = 0;
+    const statDropdown = document.getElementById("stat-dropdown");
+    statDropdown.selectedIndex = 0;
 
-    // call the overall fetch function to make a request to the API
-    // again, as long as all fields are still inputed correctly?
-    // check this inside the function using document functions, gets the
-    // inputs from all 3 fields (and existing players already added) and if
-    // all are present then make the API request
-
-    //apiFunctionHere();
-
-    // reset the players as soon as the season dropdown selection
-    // changes?
+    data = []; 
   };
 }
 
@@ -146,20 +137,6 @@ function handlePlayerClick(e) {
   const statDropdown = document.getElementById("stat-dropdown");
   const playerDropdown = document.getElementById("player-dropdown");
   const playerInputEl = document.getElementById("search-players-input");
-
-  // if nothing is selected for season, show a modal error?
-  // if (seasonDropdown.selectedIndex <= 0) {
-
-  // }
-
-  // if nothing is selected for stat, show a modal error?
-  // if (statDropdown.selectedIndex <= 0) {
-
-  // }
-
-  // add to the player-names container (if data returned back successfully)
-
-  // first make sure the two dropdowns are correctly selected
 
   if (seasonDropdown.selectedIndex > 0 && statDropdown.selectedIndex > 0) {
     let seasonVal = seasonDropdown.options[seasonDropdown.selectedIndex].value;
