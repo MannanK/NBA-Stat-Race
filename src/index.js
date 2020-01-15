@@ -30,6 +30,7 @@ const stats = [
 ];
 
 let data = [];
+let resetData = false;
 
 // make the season dropdown menu
 function makeSeasonDropdown() {
@@ -49,17 +50,28 @@ function makeSeasonDropdown() {
     dropdownEl.classList.remove("not-selected-error");
   };
 
-  dropdownEl.onchange = function () {
-    // const statDropdown = document.getElementById("stat-dropdown");
-    data = [];
+  let previousVal = dropdownEl.selectedIndex;
 
+  dropdownEl.onfocus = function () {
+    previousVal = dropdownEl.selectedIndex;
+  };
+
+  dropdownEl.onchange = function () {
     const graphContainer = document.getElementById("graph-container");
     const playerNamesContainer = document.getElementsByClassName("player-names-container")[0];
-    const svg = document.getElementsByTagName("svg");
+    const lineContainer = document.getElementsByClassName("line-container");
 
-    if (svg.length !== 0) {
-      graphContainer.classList.add("graph-glow");
-      playerNamesContainer.classList.add("graph-glow");
+    if (dropdownEl.selectedIndex === previousVal) {
+      graphContainer.classList.remove("graph-glow");
+      playerNamesContainer.classList.remove("graph-glow");
+      resetData = false;
+    } else {
+      // const statDropdown = document.getElementById("stat-dropdown");
+      if (lineContainer.length !== 0) {
+        graphContainer.classList.add("graph-glow");
+        playerNamesContainer.classList.add("graph-glow");
+        resetData = true;
+      }
     }
   };
 }
@@ -144,6 +156,8 @@ function handlePlayerClick(e) {
   const statDropdown = document.getElementById("stat-dropdown");
   const playerDropdown = document.getElementById("player-dropdown");
   const playerInputEl = document.getElementById("search-players-input");
+  const graphContainer = document.getElementById("graph-container");
+  const playerNamesContainer = document.getElementsByClassName("player-names-container")[0];
 
   if (seasonDropdown.selectedIndex > 0 && statDropdown.selectedIndex > 0) {
     let seasonVal = seasonDropdown.options[seasonDropdown.selectedIndex].value;
@@ -153,16 +167,18 @@ function handlePlayerClick(e) {
     searchPlayerStats(seasonVal, statVal, playerVal)
       .then(searchResults => {
         if (searchResults !== null) {
+          if (resetData) {
+            data = [];
+            resetData = false;
+          }
+
           playerDropdown.remove();
+          graphContainer.classList.remove("graph-glow");
+          playerNamesContainer.classList.remove("graph-glow");
           playerInputEl.value = "";
 
-          if (data.length !== 0) {
-            data.push(searchResults);
-            updateGraph(data);
-          } else {
-            data.push(searchResults);
-            makeGraph(data);
-          }
+          data.push(searchResults);
+          updateGraph(data);
 
           updatePlayerNames();
         } else {
@@ -201,11 +217,9 @@ function updatePlayerNames() {
   }
 
   data.forEach((player, i) => {
-    console.log(player);
     let playerNameContainer = document.createElement("div");
     playerNameContainer.classList.add("player-name-container");
     playerNameContainer.setAttribute("id", `player-name-${i}`);
-    // playerNameContainer.onclick = handlePlayerClick;
     playerNameContainer.innerHTML = player.name;
     playerNamesContainer.append(playerNameContainer);
   });
@@ -279,4 +293,6 @@ window.addEventListener("DOMContentLoaded", () => {
   };
 
   debouncedSearch = debounce(debouncedSearch, 400);
+
+  makeGraph(data, true);
 });
