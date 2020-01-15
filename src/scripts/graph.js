@@ -22,9 +22,8 @@ function resizingFunction(svg) {
   }
 }
 
-export function makeGraph(data) {
+export function makeGraph(data, makeHover) {
   if (document.getElementsByTagName("svg").length !== 0) {
-    console.log("got here!");
     updateGraph(data);
   } else {
     let docGraphWidth = document.getElementById("graph-container").clientWidth;
@@ -78,13 +77,14 @@ export function makeGraph(data) {
       .attr("transform", "rotate(-90)")
       .attr("y", 10)
       .attr("dy", "0.8em")
-      .text("Total");
+      .text("Total")
+      .attr("fill", "white");
 
-    updateGraph(data);
+    updateGraph(data, makeHover);
   }
 }
 
-export function updateGraph(data) {
+export function updateGraph(data, makeHover) {
   let svg = d3.selectAll('svg');
 
   let docGraphWidth = document.getElementById("graph-container").clientWidth;
@@ -160,36 +160,38 @@ export function updateGraph(data) {
     .attr("width", width)
     .attr("height", height)
 
-  // const hoverOverlay = d3.selectAll('.hover-overlay');
-  const hoverInfoContainer = d3.selectAll('.hover-info-container');
-  const hoverLine = d3.selectAll(".hover-line");
+  if (makeHover) {
+    // const hoverOverlay = d3.selectAll('.hover-overlay');
+    const hoverInfoContainer = d3.selectAll('.hover-info-container');
+    const hoverLine = d3.selectAll(".hover-line");
 
-  let newData = data.map(player => merge({}, player));
+    let newData = data.map(player => merge({}, player));
 
-  data.forEach((player, idx) => {
-    let numGamesPlayed = player.values.length-1;
+    data.forEach((player, idx) => {
+      let numGamesPlayed = player.values.length - 1;
 
-    if(numGamesPlayed != 82) {
-      let lastGame = numGamesPlayed+1;
-      let total = player.values[numGamesPlayed].total;
-      
-      for (let i=lastGame; i <= 82; i++) {
-        let obj = {
-          game : lastGame,
-          total
+      if (numGamesPlayed != 82) {
+        let lastGame = numGamesPlayed + 1;
+        let total = player.values[numGamesPlayed].total;
+
+        for (let i = lastGame; i <= 82; i++) {
+          let obj = {
+            game: lastGame,
+            total
+          }
+
+          newData[idx].values.push(obj);
+          lastGame++;
         }
-
-        newData[idx].values.push(obj);
-        lastGame++;
       }
-    }
 
-    newData[idx].originalIndex = idx;
-  });
+      newData[idx].originalIndex = idx;
+    });
 
-  d3.select(".hover-overlay")
-    .on('mousemove', showHoverInfo.bind(this, newData, xScale, yScale, hoverOverlay, hoverInfoContainer, hoverLine, width, height, color))
-    .on('mouseout', hideHoverInfo)
+    d3.select(".hover-overlay")
+      .on('mousemove', showHoverInfo.bind(this, newData, xScale, yScale, hoverOverlay, hoverInfoContainer, hoverLine, width, height, color))
+      .on('mouseout', hideHoverInfo);
+  }
 }
 
 function hideHoverInfo() {

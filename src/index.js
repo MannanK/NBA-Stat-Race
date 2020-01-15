@@ -30,6 +30,9 @@ const stats = [
 ];
 
 let data = [];
+let resetData = false;
+let previousSeasonVal = 0;
+let previousStatVal = 0;
 
 // make the season dropdown menu
 function makeSeasonDropdown() {
@@ -48,20 +51,6 @@ function makeSeasonDropdown() {
   dropdownEl.onclick = function () {
     dropdownEl.classList.remove("not-selected-error");
   };
-
-  dropdownEl.onchange = function () {
-    // const statDropdown = document.getElementById("stat-dropdown");
-    data = [];
-
-    const graphContainer = document.getElementById("graph-container");
-    const playerNamesContainer = document.getElementsByClassName("player-names-container")[0];
-    const svg = document.getElementsByTagName("svg");
-
-    if (svg.length !== 0) {
-      graphContainer.classList.add("graph-glow");
-      playerNamesContainer.classList.add("graph-glow");
-    }
-  };
 }
 
 // make the stat dropdown menu
@@ -77,11 +66,47 @@ function makeStatDropdown() {
     options += `<option value="${key}">` + val + "</option>";
   });
 
+  dropdownEl.innerHTML = options;
+
   dropdownEl.onclick = function () {
     dropdownEl.classList.remove("not-selected-error");
   };
+}
 
-  dropdownEl.innerHTML = options;
+function checkGraphGlow() {
+  const seasonDropdown = document.getElementById("season-dropdown");
+  const statDropdown = document.getElementById("stat-dropdown");
+  const graphContainer = document.getElementById("graph-container");
+  const playerNamesContainer = document.getElementsByClassName("player-names-container")[0];
+  const lineContainer = document.getElementsByClassName("line-container");
+
+  seasonDropdown.onchange = function () {
+    if (seasonDropdown.selectedIndex === previousSeasonVal && statDropdown.selectedIndex === previousStatVal) {
+      graphContainer.classList.remove("graph-glow");
+      playerNamesContainer.classList.remove("graph-glow");
+      resetData = false;
+    } else {
+      if (lineContainer.length !== 0) {
+        graphContainer.classList.add("graph-glow");
+        playerNamesContainer.classList.add("graph-glow");
+        resetData = true;
+      }
+    }
+  };
+
+  statDropdown.onchange = function () {
+    if (statDropdown.selectedIndex === previousStatVal && seasonDropdown.selectedIndex === previousSeasonVal) {
+      graphContainer.classList.remove("graph-glow");
+      playerNamesContainer.classList.remove("graph-glow");
+      resetData = false;
+    } else {
+      if (lineContainer.length !== 0) {
+        graphContainer.classList.add("graph-glow");
+        playerNamesContainer.classList.add("graph-glow");
+        resetData = true;
+      }
+    }
+  };
 }
 
 // check if the user has entered valid input
@@ -119,7 +144,7 @@ function makePlayerDropdown(searchResults) {
   }
   // otherwise, make a new ul for the dropdown
   else {
-    playerList = document.createElement("ul")
+    playerList = document.createElement("ul");
     playerList.setAttribute("id", "player-dropdown");
   }
 
@@ -144,6 +169,20 @@ function handlePlayerClick(e) {
   const statDropdown = document.getElementById("stat-dropdown");
   const playerDropdown = document.getElementById("player-dropdown");
   const playerInputEl = document.getElementById("search-players-input");
+  const graphContainer = document.getElementById("graph-container");
+  const playerNamesContainer = document.getElementsByClassName("player-names-container")[0];
+
+  if (seasonDropdown.selectedIndex === previousSeasonVal && statDropdown.selectedIndex === previousStatVal) {
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].name === e.target.textContent) {
+        playerDropdown.remove();
+        playerInputEl.value = "";
+
+        makeModal("duplicate-player", e.target.textContent);
+        return;
+      }
+    }
+  }
 
   if (seasonDropdown.selectedIndex > 0 && statDropdown.selectedIndex > 0) {
     let seasonVal = seasonDropdown.options[seasonDropdown.selectedIndex].value;
@@ -153,16 +192,20 @@ function handlePlayerClick(e) {
     searchPlayerStats(seasonVal, statVal, playerVal)
       .then(searchResults => {
         if (searchResults !== null) {
+          if (resetData) {
+            data = [];
+            resetData = false;
+          }
+
           playerDropdown.remove();
+          previousSeasonVal = seasonDropdown.selectedIndex;
+          previousStatVal = statDropdown.selectedIndex;
+          graphContainer.classList.remove("graph-glow");
+          playerNamesContainer.classList.remove("graph-glow");
           playerInputEl.value = "";
 
-          if (data.length !== 0) {
-            data.push(searchResults);
-            updateGraph(data);
-          } else {
-            data.push(searchResults);
-            makeGraph(data);
-          }
+          data.push(searchResults);
+          updateGraph(data, true);
 
           updatePlayerNames();
         } else {
@@ -201,40 +244,85 @@ function updatePlayerNames() {
   }
 
   data.forEach((player, i) => {
-    console.log(player);
     let playerNameContainer = document.createElement("div");
     playerNameContainer.classList.add("player-name-container");
-    playerNameContainer.setAttribute("id", `player-name-${i}`);
-    // playerNameContainer.onclick = handlePlayerClick;
-    playerNameContainer.innerHTML = player.name;
+    playerNameContainer.innerHTML = `<span class="player-name">${player.name}</span>`;
+
+    const removePlayerButton = document.createElement('button');
+    removePlayerButton.setAttribute("id", `player-name-${i}`);
+    removePlayerButton.className = "remove-player-button";
+    removePlayerButton.innerHTML = '<i class="fas fa-window-close"></i>';
+    removePlayerButton.onclick = handleRemovePlayer;
+    
+    playerNameContainer.appendChild(removePlayerButton);
     playerNamesContainer.append(playerNameContainer);
   });
 }
 
+function handleRemovePlayer(e) {
+  let idx = e.target.parentNode.id.split("-")[2];
+  data.splice(idx, 1);
+  
+  if (data.length !== 0) {
+    updateGraph(data, true);
+  } else {
+    updateGraph(data, false);
+  }
+
+  updatePlayerNames();
+}
+
+window.data = data;
+
 function makeModal(type, playerName) {
-  if (type === "no-player-in-season") {
-    const modalBackground = document.createElement('div');
-    modalBackground.className = type;
-    document.body.appendChild(modalBackground);
+  const modalBackground = document.createElement('div');
+  const modalPopup = document.createElement('section');
+  const popupText = document.createElement('strong');
+  const popupButton = document.createElement('button');
 
-    // const mainContentEl = document.getElementsByClassName("content")[0];
-    const modalPopup = document.createElement('section');
-    modalPopup.className = "no-player-in-season-popup";
+  switch (type) {
+    case "no-player-in-season":
+      modalBackground.className = type;
+      document.body.appendChild(modalBackground);
 
-    const popupText = document.createElement('strong');
-    popupText.textContent = `${playerName} didn't play in this season!`;
-    modalPopup.appendChild(popupText);
+      modalPopup.className = "no-player-in-season-popup";
 
-    const popupButton = document.createElement('button');
-    popupButton.className = "no-player-in-season-button";
-    popupButton.innerHTML = '<i class="fas fa-window-close"></i>';
-    modalPopup.appendChild(popupButton);
+      popupText.textContent = `${playerName} didn't play in this season!`;
+      modalPopup.appendChild(popupText);
 
-    popupButton.onclick = function () {
-      modalBackground.remove();
-    }
+      popupButton.className = "no-player-in-season-button";
+      popupButton.innerHTML = '<i class="fas fa-window-close"></i>';
+      modalPopup.appendChild(popupButton);
 
-    modalBackground.appendChild(modalPopup);
+      popupButton.onclick = function () {
+        modalBackground.remove();
+      };
+
+      modalBackground.appendChild(modalPopup);
+
+      break;
+    case "duplicate-player":
+      modalBackground.className = type;
+      document.body.appendChild(modalBackground);
+
+      modalPopup.className = "duplicate-player-popup";
+
+      popupText.textContent = `You have already added ${playerName}!`;
+      modalPopup.appendChild(popupText);
+
+      popupButton.className = "duplicate-player-button";
+      popupButton.innerHTML = '<i class="fas fa-window-close"></i>';
+      modalPopup.appendChild(popupButton);
+
+      popupButton.onclick = function () {
+        modalBackground.remove();
+      };
+
+      modalBackground.appendChild(modalPopup);
+
+      break;
+    default:
+      break;
   }
 }
 
@@ -253,6 +341,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   makeSeasonDropdown();
   makeStatDropdown();
+  checkGraphGlow();
 
   const playerInputEl = document.getElementById("search-players-input");
 
@@ -279,4 +368,6 @@ window.addEventListener("DOMContentLoaded", () => {
   };
 
   debouncedSearch = debounce(debouncedSearch, 400);
+
+  makeGraph(data, false);
 });
