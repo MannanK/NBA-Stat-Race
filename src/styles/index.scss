@@ -87,7 +87,7 @@ option {
 
 // GLOSSARY & INFORMATION BUTTON
 
-.glossary-button, .information-button {
+#glossary-button, #information-button {
   width: 100%;
   cursor: pointer;
   border: none;
@@ -96,11 +96,11 @@ option {
   transition: all 300ms ease-in-out;
 }
 
-.glossary-button:hover, .information-button:hover {
+#glossary-button:hover, #information-button:hover {
   transform: scale(1.05);
 }
 
-.glossary-button {
+#glossary-button {
   margin-left: 8%;
 }
 
