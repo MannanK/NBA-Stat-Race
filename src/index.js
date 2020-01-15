@@ -321,6 +321,16 @@ function makeModal(type, playerName) {
       modalBackground.appendChild(modalPopup);
 
       break;
+    case "glossary":
+      const glossaryBackground = document.getElementsByClassName("glossary")[0];
+      const glossaryCloseButton = document.getElementsByClassName("glossary-button")[0];
+
+      glossaryBackground.style.display = "block";
+      glossaryCloseButton.onclick = function () {
+        glossaryBackground.style.display = "";
+      };
+
+      break;
     default:
       break;
   }
@@ -344,6 +354,9 @@ window.addEventListener("DOMContentLoaded", () => {
   checkGraphGlow();
 
   const playerInputEl = document.getElementById("search-players-input");
+  const playerDropdown = document.getElementById("player-dropdown");
+  const glossaryButton = document.getElementById("glossary-button");
+  const informationButton = document.getElementById("information-button");
 
   // every time the user changes the input field, call handlePlayerInput
   playerInputEl.oninput = handlePlayerInput;
@@ -352,8 +365,8 @@ window.addEventListener("DOMContentLoaded", () => {
   // if it is currently on the page
   document.onclick = function (e) {
     if (e.target.id !== "search-players-input" && e.target.className !== "player-item") {
-      if (document.getElementById("player-dropdown")) {
-        document.getElementById("player-dropdown").style.display = "none";
+      if (playerDropdown) {
+        playerDropdown.style.display = "none";
       }
     }
   };
@@ -362,10 +375,13 @@ window.addEventListener("DOMContentLoaded", () => {
   // hidden
   // allows us to not send out another API call since input hasn't changed
   playerInputEl.onclick = function (e) {
-    if (document.getElementById("player-dropdown")) {
-      document.getElementById("player-dropdown").style.display = "";
+    if (playerDropdown) {
+      playerDropdown.style.display = "";
     }
   };
+
+  glossaryButton.onclick = () => makeModal("glossary");
+  informationButton.onclick = () => makeModal("information");
 
   debouncedSearch = debounce(debouncedSearch, 400);
 
