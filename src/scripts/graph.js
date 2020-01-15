@@ -22,71 +22,66 @@ function resizingFunction(svg) {
   }
 }
 
-export function makeGraph(data, update) {
-  // document.getElementById("graph-container").style.height = "75vh";
+export function makeGraph(data) {
+  if (document.getElementsByTagName("svg").length !== 0) {
+    console.log("got here!");
+    updateGraph(data);
+  } else {
+    let docGraphWidth = document.getElementById("graph-container").clientWidth;
+    let docGraphHeight = document.getElementById("graph-container").clientHeight;
 
-  let docGraphWidth = document.getElementById("graph-container").clientWidth;
-  let docGraphHeight = document.getElementById("graph-container").clientHeight;
+    let width = docGraphWidth - margin.left - margin.right;
+    let height = docGraphHeight - margin.top - margin.bottom;
 
-  let width = docGraphWidth - margin.left - margin.right;
-  let height = docGraphHeight - margin.top - margin.bottom;
-
-  // Margin convention and make the graph resize as the window resizes
-  // From now on, all subsequent code can just use 'width' and 'height'
-  let svg = d3.select('#graph-container').append("svg")
-    .attr('width', docGraphWidth)
-    .attr('height', docGraphHeight);
+    // Margin convention and make the graph resize as the window resizes
+    // From now on, all subsequent code can just use 'width' and 'height'
+    let svg = d3.select('#graph-container').append("svg")
+      .attr('width', docGraphWidth)
+      .attr('height', docGraphHeight);
     // .call(resizingFunction);
 
-  let g = svg.append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    let g = svg.append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  // let hoverInfoContainerEl = document.createElement("div");
-  // hoverInfoContainerEl.className = "hover-info-container";
-  // document.getElementById("graph-container").appendChild(hoverInfoContainerEl);
+    // make the hover info/tooltip container
+    d3.select('#graph-container')
+      .append("g")
+      .attr("class", "hover-info-container")
+      .style('display', 'none');
 
-  let hoverInfoContainerEl = d3
-    .select('#graph-container')
-    .append("g")
-    .attr("class", "hover-info-container")
-    .style('display', 'none');
+    // make the hover line that will show up as the mouse moves
+    g.append("line")
+      .attr("class", "hover-line")
+      .style("shape-rendering", "crispEdges");
 
-  let hoverInfoContainer = d3.selectAll(".hover-info-container");
-  let hoverLine = g.append("line").attr("class", "hover-line").style("shape-rendering", "crispEdges");
+    let linesContainer = g.append('g')
+      .attr('class', 'lines-container');
 
-  let linesContainer = g.append('g')
-    .attr('class', 'lines-container');
+    let xScale = d3.scaleLinear()
+      .domain([0, 82])
+      .range([0, width]);
 
-  let xScale = d3.scaleLinear()
-    .domain([0, 82])
-    .range([0, width]);
+    // change these two to g.append if want axis in front of the lines
+    // make the x axis group
+    linesContainer.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .attr('class', "x-axis")
+      .transition()
+      .duration(750)
+      .call(d3.axisBottom(xScale));
 
-  // change these two to g.append if want axis in front of the lines
-  // make the x axis group
-  linesContainer.append("g")
-    .attr("transform", "translate(0," + height + ")")
-    .attr('class', "x-axis")
-    .transition()
-    .duration(750)
-    .call(d3.axisBottom(xScale));
+    // make the y axis group
+    linesContainer.append("g")
+      .attr('class', "y-axis")
+      .append("text")
+      .attr("fill", "#000")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 10)
+      .attr("dy", "0.8em")
+      .text("Total");
 
-  // make the y axis group
-  linesContainer.append("g")
-    .attr('class', "y-axis")
-    .append("text")
-    .attr("fill", "#000")
-    .attr("transform", "rotate(-90)")
-    .attr("y", 10)
-    .attr("dy", "0.8em")
-    .text("Total");
-
-  // --------- hover info ---------
-
-  // let hoverInfoContainer = g.append("g")
-	// 	.attr("class", "hover-info-container")
-  // 	.style("display", "none");
-
-  updateGraph(data);
+    updateGraph(data);
+  }
 }
 
 export function updateGraph(data) {
@@ -225,7 +220,7 @@ function showHoverInfo(data, xScale, yScale, hoverOverlay, hoverInfoContainer, h
     })
 
     hoverLine
-      .attr('stroke', 'black')
+      .attr('stroke', 'white')
       .attr('x1', xScale(game))
       .attr('x2', xScale(game))
       .attr('y1', 0)

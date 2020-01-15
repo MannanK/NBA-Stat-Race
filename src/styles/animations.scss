@@ -42,3 +42,10 @@
   80% { -o-transform: translate(8px); }
   100% { -o-transform: translate(0px); }
 }
+
+@keyframes graph-glow {
+  0% { box-shadow: 0 0 -5px rgb(175, 42, 42); }
+  40% { box-shadow: 0 0 15px rgb(175, 42, 42); }
+  60% { box-shadow: 0 0 15px rgb(175, 42, 42); }
+  100% { box-shadow: 0 0 -5px rgb(175, 42, 42); }
+}

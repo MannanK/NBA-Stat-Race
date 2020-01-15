@@ -1,11 +1,16 @@
 #graph-container {
-  background-color: rgb(245, 227, 227);
+  background-color: rgb(7, 7, 7);
   margin: 0 auto;
   margin-bottom: 50px;
   height: 75vh;
   border-radius: 20px;
   position: relative;
   width: 100%;
+  color: white;
+}
+
+.graph-glow {
+  animation: graph-glow 1200ms infinite;
 }
 
 // GRAPH ELEMENTS
@@ -15,9 +20,13 @@
   fill: none;
 }
 
+.x-axis, .y-axis {
+  font: 12px sans-serif;
+}
+
 .hover-info-container {
   position: absolute;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(90, 87, 87, 0.8);
   border-radius: 8px;
   padding: 10px;
   text-align: center;

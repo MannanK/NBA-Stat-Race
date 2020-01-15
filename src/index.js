@@ -9,24 +9,24 @@ import { searchPlayers, searchPlayerStats } from './scripts/api_util';
 import { debounce } from 'lodash';
 
 const stats = [
+  { 'pts': "PTS" },
   { 'fgm': "FGM" },
   { 'fga': "FGA" },
   { 'fg3m': "3PM" },
   { 'fg3a': "3PA" },
   { 'ftm': "FTM" },
   { 'fta': "FTA" },
-  { 'oreb': "OREB" },
-  { 'dreb': "DREB" },
-  { 'reb': "REB" },
   { 'ast': "AST" },
+  { 'reb': "REB" },
+  { 'dreb': "DREB" },
+  { 'oreb': "OREB" },
   { 'stl': "STL" },
   { 'blk': "BLK" },
   { 'turnover': "TO" },
-  { 'pf': "PF" },
-  { 'pts': "PTS" },
-  { 'fg_pct': "FG%" },
-  { 'fg3_pct': "3PT%" },
-  { 'ft_pct': "FT%" }
+  { 'pf': "PF" }
+  // { 'fg_pct': "FG%" },
+  // { 'fg3_pct': "3PT%" },
+  // { 'ft_pct': "FT%" }
 ];
 
 let data = [];
@@ -50,19 +50,17 @@ function makeSeasonDropdown() {
   };
 
   dropdownEl.onchange = function () {
-    // to reset the stat dropdown
-    // document.getElementById("stat-dropdown").selectedIndex = 0;
+    // const statDropdown = document.getElementById("stat-dropdown");
+    data = [];
 
-    // call the overall fetch function to make a request to the API
-    // again, as long as all fields are still inputed correctly?
-    // check this inside the function using document functions, gets the
-    // inputs from all 3 fields (and existing players already added) and if
-    // all are present then make the API request
+    const graphContainer = document.getElementById("graph-container");
+    const playerNamesContainer = document.getElementsByClassName("player-names-container")[0];
+    const svg = document.getElementsByTagName("svg");
 
-    //apiFunctionHere();
-
-    // reset the players as soon as the season dropdown selection
-    // changes?
+    if (svg.length !== 0) {
+      graphContainer.classList.add("graph-glow");
+      playerNamesContainer.classList.add("graph-glow");
+    }
   };
 }
 
@@ -146,20 +144,6 @@ function handlePlayerClick(e) {
   const statDropdown = document.getElementById("stat-dropdown");
   const playerDropdown = document.getElementById("player-dropdown");
   const playerInputEl = document.getElementById("search-players-input");
-
-  // if nothing is selected for season, show a modal error?
-  // if (seasonDropdown.selectedIndex <= 0) {
-
-  // }
-
-  // if nothing is selected for stat, show a modal error?
-  // if (statDropdown.selectedIndex <= 0) {
-
-  // }
-
-  // add to the player-names container (if data returned back successfully)
-
-  // first make sure the two dropdowns are correctly selected
 
   if (seasonDropdown.selectedIndex > 0 && statDropdown.selectedIndex > 0) {
     let seasonVal = seasonDropdown.options[seasonDropdown.selectedIndex].value;
