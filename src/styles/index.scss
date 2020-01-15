@@ -61,6 +61,10 @@ body {
   transform: scale(1.05);
 }
 
+option {
+  background-color: gray;
+}
+
 .not-selected-error {
   background-color: rgb(175, 42, 42);
   color: rgb(255, 225, 0);
@@ -140,19 +144,49 @@ body {
 
 .player-names-container {
   width: 75.5%;
+  min-height: 5vh;
+  max-height: fit-content;
   display: flex;
   color: white;
   align-items: center;
   padding: 0 1vw;
   box-sizing: border-box;
-  height: 5vh;
   align-self: center;
   justify-content: space-evenly;
+  flex-wrap: wrap;
   box-shadow: 0px 0px 4px white;
 
   @media only screen and (max-device-width: 500px)  { 
     font-size: 11px;
   }
+}
+
+.player-name-container {
+  margin-right: 1vw;
+  margin-top: 1vh;
+  margin-bottom: 1vh;
+}
+
+.player-name {
+  margin-right: 0.4vw;
+}
+
+.remove-player-button {
+  border: none;
+  background: none;
+  padding: 0;
+  outline: none;
+  color: rgb(245, 217, 10);
+  font-size: 14px;
+
+  @media only screen and (max-device-width: 500px)  { 
+    font-size: 9px;
+  }
+}
+
+.remove-player-button:hover {
+  cursor: pointer;
+  color: rgb(197, 176, 16);
 }
 
 // FOOTER

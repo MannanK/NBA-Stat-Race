@@ -193,7 +193,7 @@ function handlePlayerClick(e) {
           playerInputEl.value = "";
 
           data.push(searchResults);
-          updateGraph(data);
+          updateGraph(data, true);
 
           updatePlayerNames();
         } else {
@@ -234,11 +234,33 @@ function updatePlayerNames() {
   data.forEach((player, i) => {
     let playerNameContainer = document.createElement("div");
     playerNameContainer.classList.add("player-name-container");
-    playerNameContainer.setAttribute("id", `player-name-${i}`);
-    playerNameContainer.innerHTML = player.name;
+    playerNameContainer.innerHTML = `<span class="player-name">${player.name}</span>`;
+
+    const removePlayerButton = document.createElement('button');
+    removePlayerButton.setAttribute("id", `player-name-${i}`);
+    removePlayerButton.className = "remove-player-button";
+    removePlayerButton.innerHTML = '<i class="fas fa-window-close"></i>';
+    removePlayerButton.onclick = handleRemovePlayer;
+    
+    playerNameContainer.appendChild(removePlayerButton);
     playerNamesContainer.append(playerNameContainer);
   });
 }
+
+function handleRemovePlayer(e) {
+  let idx = e.target.parentNode.id.split("-")[2];
+  data.splice(idx, 1);
+  
+  if (data.length !== 0) {
+    updateGraph(data, true);
+  } else {
+    updateGraph(data, false);
+  }
+
+  updatePlayerNames();
+}
+
+window.data = data;
 
 function makeModal(type, playerName) {
   if (type === "no-player-in-season") {
@@ -310,5 +332,5 @@ window.addEventListener("DOMContentLoaded", () => {
 
   debouncedSearch = debounce(debouncedSearch, 400);
 
-  makeGraph(data, true);
+  makeGraph(data, false);
 });

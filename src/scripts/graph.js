@@ -22,7 +22,7 @@ function resizingFunction(svg) {
   }
 }
 
-export function makeGraph(data, initial) {
+export function makeGraph(data, makeHover) {
   if (document.getElementsByTagName("svg").length !== 0) {
     updateGraph(data);
   } else {
@@ -80,11 +80,11 @@ export function makeGraph(data, initial) {
       .text("Total")
       .attr("fill", "white");
 
-    updateGraph(data, initial);
+    updateGraph(data, makeHover);
   }
 }
 
-export function updateGraph(data, initial) {
+export function updateGraph(data, makeHover) {
   let svg = d3.selectAll('svg');
 
   let docGraphWidth = document.getElementById("graph-container").clientWidth;
@@ -160,7 +160,7 @@ export function updateGraph(data, initial) {
     .attr("width", width)
     .attr("height", height)
 
-  if (!initial) {
+  if (makeHover) {
     // const hoverOverlay = d3.selectAll('.hover-overlay');
     const hoverInfoContainer = d3.selectAll('.hover-info-container');
     const hoverLine = d3.selectAll(".hover-line");
