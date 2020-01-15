@@ -172,6 +172,18 @@ function handlePlayerClick(e) {
   const graphContainer = document.getElementById("graph-container");
   const playerNamesContainer = document.getElementsByClassName("player-names-container")[0];
 
+  if (seasonDropdown.selectedIndex === previousSeasonVal && statDropdown.selectedIndex === previousStatVal) {
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].name === e.target.textContent) {
+        playerDropdown.remove();
+        playerInputEl.value = "";
+
+        makeModal("duplicate-player", e.target.textContent);
+        return;
+      }
+    }
+  }
+
   if (seasonDropdown.selectedIndex > 0 && statDropdown.selectedIndex > 0) {
     let seasonVal = seasonDropdown.options[seasonDropdown.selectedIndex].value;
     let statVal = statDropdown.options[statDropdown.selectedIndex].value;
@@ -263,29 +275,54 @@ function handleRemovePlayer(e) {
 window.data = data;
 
 function makeModal(type, playerName) {
-  if (type === "no-player-in-season") {
-    const modalBackground = document.createElement('div');
-    modalBackground.className = type;
-    document.body.appendChild(modalBackground);
+  const modalBackground = document.createElement('div');
+  const modalPopup = document.createElement('section');
+  const popupText = document.createElement('strong');
+  const popupButton = document.createElement('button');
 
-    // const mainContentEl = document.getElementsByClassName("content")[0];
-    const modalPopup = document.createElement('section');
-    modalPopup.className = "no-player-in-season-popup";
+  switch (type) {
+    case "no-player-in-season":
+      modalBackground.className = type;
+      document.body.appendChild(modalBackground);
 
-    const popupText = document.createElement('strong');
-    popupText.textContent = `${playerName} didn't play in this season!`;
-    modalPopup.appendChild(popupText);
+      modalPopup.className = "no-player-in-season-popup";
 
-    const popupButton = document.createElement('button');
-    popupButton.className = "no-player-in-season-button";
-    popupButton.innerHTML = '<i class="fas fa-window-close"></i>';
-    modalPopup.appendChild(popupButton);
+      popupText.textContent = `${playerName} didn't play in this season!`;
+      modalPopup.appendChild(popupText);
 
-    popupButton.onclick = function () {
-      modalBackground.remove();
-    };
+      popupButton.className = "no-player-in-season-button";
+      popupButton.innerHTML = '<i class="fas fa-window-close"></i>';
+      modalPopup.appendChild(popupButton);
 
-    modalBackground.appendChild(modalPopup);
+      popupButton.onclick = function () {
+        modalBackground.remove();
+      };
+
+      modalBackground.appendChild(modalPopup);
+
+      break;
+    case "duplicate-player":
+      modalBackground.className = type;
+      document.body.appendChild(modalBackground);
+
+      modalPopup.className = "duplicate-player-popup";
+
+      popupText.textContent = `You have already added ${playerName}!`;
+      modalPopup.appendChild(popupText);
+
+      popupButton.className = "duplicate-player-button";
+      popupButton.innerHTML = '<i class="fas fa-window-close"></i>';
+      modalPopup.appendChild(popupButton);
+
+      popupButton.onclick = function () {
+        modalBackground.remove();
+      };
+
+      modalBackground.appendChild(modalPopup);
+
+      break;
+    default:
+      break;
   }
 }
 

@@ -1,6 +1,6 @@
-/* PLAYER DIDN'T PLAY IN SEASON MODAL CONTAINER */
+/* MODAL CONTAINER */
 
-.no-player-in-season {
+.no-player-in-season, .duplicate-player {
   background: rgba(0, 0, 0, 0.6);
   left: 0;
   position: fixed;
@@ -10,9 +10,9 @@
   width: auto !important;
 }
 
-/* PLAYER DIDN'T PLAY IN SEASON MODAL POPUP */
+/* MODAL POPUP */
 
-.no-player-in-season-popup {
+.no-player-in-season-popup, .duplicate-player-popup {
   position: relative;
   top: 45%;
   margin: 0 auto;
@@ -29,9 +29,9 @@
   color: white;
 }
 
-/* PLAYER DIDN'T PLAY IN SEASON MODAL BUTTON */
+/* MODAL BUTTON */
 
-.no-player-in-season-button {
+.no-player-in-season-button, .duplicate-player-button {
   border: none;
   padding: 0;
   background: none;
@@ -43,7 +43,7 @@
   color: rgb(55, 194, 209);
 }
 
-.no-player-in-season-button:hover {
+.no-player-in-season-button:hover, .duplicate-player-button:hover {
   cursor: pointer;
   color: rgb(9, 149, 165);
 }
