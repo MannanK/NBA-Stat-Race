@@ -354,7 +354,6 @@ window.addEventListener("DOMContentLoaded", () => {
   checkGraphGlow();
 
   const playerInputEl = document.getElementById("search-players-input");
-  const playerDropdown = document.getElementById("player-dropdown");
   const glossaryButton = document.getElementById("glossary-button");
   const informationButton = document.getElementById("information-button");
 
@@ -364,6 +363,8 @@ window.addEventListener("DOMContentLoaded", () => {
   // if user clicks outside of the dropdown or input field, hide the dropdown
   // if it is currently on the page
   document.onclick = function (e) {
+    const playerDropdown = document.getElementById("player-dropdown");
+
     if (e.target.id !== "search-players-input" && e.target.className !== "player-item") {
       if (playerDropdown) {
         playerDropdown.style.display = "none";
@@ -375,13 +376,15 @@ window.addEventListener("DOMContentLoaded", () => {
   // hidden
   // allows us to not send out another API call since input hasn't changed
   playerInputEl.onclick = function (e) {
+    const playerDropdown = document.getElementById("player-dropdown");
+
     if (playerDropdown) {
       playerDropdown.style.display = "";
     }
   };
 
   glossaryButton.onclick = () => makeModal("glossary");
-  informationButton.onclick = () => makeModal("information");
+  // informationButton.onclick = () => makeModal("information");
 
   debouncedSearch = debounce(debouncedSearch, 400);
 

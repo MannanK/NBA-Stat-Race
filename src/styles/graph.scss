@@ -7,6 +7,10 @@
   position: relative;
   width: 100%;
   color: white;
+
+  @media only screen and (max-device-width: 500px)  { 
+    margin-bottom: 30px;
+  }
 }
 
 .graph-glow {

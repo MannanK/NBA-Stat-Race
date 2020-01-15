@@ -197,7 +197,27 @@ option {
 
 footer {
   display: flex;
-  flex-direction: column;
-  height: 4vh;
-  background-color: indianred;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5em;
+
+  @media only screen and (max-device-width: 500px)  { 
+    font-size: 2em;
+  }
+}
+
+footer div {
+  margin-right: 1.5vw;
+}
+
+footer a {
+  color: rgb(218, 194, 19);
+}
+
+footer a:hover {
+  color: rgb(192, 46, 46);
+}
+
+footer div:last-child {
+  margin-right: 0;
 }
