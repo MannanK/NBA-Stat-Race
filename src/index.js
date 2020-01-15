@@ -9,24 +9,24 @@ import { searchPlayers, searchPlayerStats } from './scripts/api_util';
 import { debounce } from 'lodash';
 
 const stats = [
+  { 'pts': "PTS" },
   { 'fgm': "FGM" },
   { 'fga': "FGA" },
   { 'fg3m': "3PM" },
   { 'fg3a': "3PA" },
   { 'ftm': "FTM" },
   { 'fta': "FTA" },
-  { 'oreb': "OREB" },
-  { 'dreb': "DREB" },
-  { 'reb': "REB" },
   { 'ast': "AST" },
+  { 'reb': "REB" },
+  { 'dreb': "DREB" },
+  { 'oreb': "OREB" },
   { 'stl': "STL" },
   { 'blk': "BLK" },
   { 'turnover': "TO" },
-  { 'pf': "PF" },
-  { 'pts': "PTS" },
-  { 'fg_pct': "FG%" },
-  { 'fg3_pct': "3PT%" },
-  { 'ft_pct': "FT%" }
+  { 'pf': "PF" }
+  // { 'fg_pct': "FG%" },
+  // { 'fg3_pct': "3PT%" },
+  // { 'ft_pct': "FT%" }
 ];
 
 let data = [];
@@ -50,10 +50,17 @@ function makeSeasonDropdown() {
   };
 
   dropdownEl.onchange = function () {
-    const statDropdown = document.getElementById("stat-dropdown");
-    statDropdown.selectedIndex = 0;
+    // const statDropdown = document.getElementById("stat-dropdown");
+    data = [];
 
-    data = []; 
+    const graphContainer = document.getElementById("graph-container");
+    const playerNamesContainer = document.getElementsByClassName("player-names-container")[0];
+    const svg = document.getElementsByTagName("svg");
+
+    if (svg.length !== 0) {
+      graphContainer.classList.add("graph-glow");
+      playerNamesContainer.classList.add("graph-glow");
+    }
   };
 }
 
