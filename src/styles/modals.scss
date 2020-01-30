@@ -1,6 +1,6 @@
 /* MODAL CONTAINER */
 
-.no-player-in-season, .duplicate-player, .glossary {
+.no-player-in-season, .duplicate-player, .glossary, .information {
   background: rgba(0, 0, 0, 0.6);
   left: 0;
   position: fixed;
@@ -10,13 +10,15 @@
   width: auto !important;
 }
 
-.glossary {
+.glossary, .information {
   display: none;
+  justify-content: center;
+  align-items: center;
 }
 
 /* MODAL POPUP */
 
-.no-player-in-season-popup, .duplicate-player-popup, .glossary-popup {
+.no-player-in-season-popup, .duplicate-player-popup, .glossary-popup, .information-popup {
   position: relative;
   top: 45%;
   margin: 0 auto;
@@ -33,20 +35,25 @@
   color: white;
 }
 
-.glossary-popup {
+.glossary-popup, .information-popup {
   height: fit-content;
   padding-left: 25px;
   padding-right: 25px;
-  top: 30%;
+  top: 0%;
 }
 
-.glossary-popup h1 {
+.information-popup {
+  align-items: flex-start;
+}
+
+.glossary-popup h1, .information-popup h1 {
   margin-bottom: 2vh;
+  font-size: 1.5em;
 }
 
 /* MODAL BUTTON */
 
-.no-player-in-season-button, .duplicate-player-button, .glossary-button {
+.no-player-in-season-button, .duplicate-player-button, .glossary-button, .information-button {
   border: none;
   padding: 0;
   background: none;
@@ -58,12 +65,24 @@
   color: rgb(55, 194, 209);
 }
 
-.no-player-in-season-button:hover, .duplicate-player-button:hover, .glossary-button:hover {
+.no-player-in-season-button:hover, .duplicate-player-button:hover, .glossary-button:hover, .information-button:hover {
   cursor: pointer;
   color: rgb(9, 149, 165);
 }
 
 /* GLOSSARY LIST */
+
+.glossary-list {
+  font-size: 1.1em;
+
+  @media (max-width: 500px)  { 
+    font-size: 1em;
+  }
+
+  @media (max-height: 500px)  { 
+    font-size: 0.8em;
+  }
+}
 
 .glossary-list-item {
   display: flex;
@@ -79,3 +98,6 @@
 .full {
   color: greenyellow;
 }
+
+/* INFORMATION DETAILS */
+

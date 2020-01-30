@@ -104,7 +104,7 @@ export function updateGraph(data, makeHover) {
     .range([0, width]);
 
   let yScale = d3.scaleLinear()
-    .domain([0, maxTotal + 20])
+    .domain([0, maxTotal + 10])
     .range([height, 0]);
 
   svg.selectAll(".y-axis")

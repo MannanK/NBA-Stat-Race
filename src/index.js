@@ -325,9 +325,19 @@ function makeModal(type, playerName) {
       const glossaryBackground = document.getElementsByClassName("glossary")[0];
       const glossaryCloseButton = document.getElementsByClassName("glossary-button")[0];
 
-      glossaryBackground.style.display = "block";
+      glossaryBackground.style.display = "flex";
       glossaryCloseButton.onclick = function () {
         glossaryBackground.style.display = "";
+      };
+
+      break;
+    case "information":
+      const informationBackground = document.getElementsByClassName("information")[0];
+      const informationCloseButton = document.getElementsByClassName("information-button")[0];
+
+      informationBackground.style.display = "flex";
+      informationCloseButton.onclick = function () {
+        informationBackground.style.display = "";
       };
 
       break;
@@ -384,7 +394,7 @@ window.addEventListener("DOMContentLoaded", () => {
   };
 
   glossaryButton.onclick = () => makeModal("glossary");
-  // informationButton.onclick = () => makeModal("information");
+  informationButton.onclick = () => makeModal("information");
 
   debouncedSearch = debounce(debouncedSearch, 400);
 
