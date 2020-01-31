@@ -40,15 +40,66 @@
   padding-left: 25px;
   padding-right: 25px;
   top: 0%;
+
+  font-size: 1.1em;
+
+  @media (max-width: 500px)  { 
+    font-size: 1em;
+  }
+
+  @media (max-height: 500px)  { 
+    font-size: 0.8em;
+  }
 }
 
 .information-popup {
-  align-items: flex-start;
+  /* align-items: flex-start; */
+  justify-content: flex-start;
+  height: 60%;
+  width: 40%;
+
+  @media (max-width: 500px)  { 
+    width: 60%;
+  }
+}
+
+.info-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 1em;
 }
 
 .glossary-popup h1, .information-popup h1 {
-  margin-bottom: 2vh;
   font-size: 1.5em;
+}
+
+.glossary-popup h1 {
+  margin-bottom: 2vh;
+}
+
+.information-popup h1 {
+  align-self: center;
+}
+
+.information-popup h2 {
+  font-size: 1.1em;
+}
+
+.information-popup .h2-container {
+  display: flex;
+  align-self: center;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 0.4vh;
+}
+
+.information-popup .h2-container::after {
+  content: '';
+  display: inline-block;
+  margin: 0.4em 0;
+  width: 140%;
+  border: 1px groove lightgreen;
 }
 
 /* MODAL BUTTON */
@@ -72,18 +123,6 @@
 
 /* GLOSSARY LIST */
 
-.glossary-list {
-  font-size: 1.1em;
-
-  @media (max-width: 500px)  { 
-    font-size: 1em;
-  }
-
-  @media (max-height: 500px)  { 
-    font-size: 0.8em;
-  }
-}
-
 .glossary-list-item {
   display: flex;
   justify-content: space-between;
@@ -101,3 +140,6 @@
 
 /* INFORMATION DETAILS */
 
+.about {
+  list-style: none;
+}
