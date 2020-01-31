@@ -57,10 +57,21 @@
   justify-content: flex-start;
   height: 60%;
   width: 40%;
+  overflow-y: auto;
 
   @media (max-width: 500px)  { 
     width: 60%;
   }
+}
+
+.information-popup::-webkit-scrollbar {
+  background-color: transparent;
+  width: 4px;
+}
+
+.information-popup::-webkit-scrollbar-thumb {
+  background-color: #7a0025;
+  border-radius: 10px;
 }
 
 .info-container {
@@ -76,30 +87,6 @@
 
 .glossary-popup h1 {
   margin-bottom: 2vh;
-}
-
-.information-popup h1 {
-  align-self: center;
-}
-
-.information-popup h2 {
-  font-size: 1.1em;
-}
-
-.information-popup .h2-container {
-  display: flex;
-  align-self: center;
-  align-items: center;
-  flex-direction: column;
-  margin-bottom: 0.4vh;
-}
-
-.information-popup .h2-container::after {
-  content: '';
-  display: inline-block;
-  margin: 0.4em 0;
-  width: 140%;
-  border: 1px groove lightgreen;
 }
 
 /* MODAL BUTTON */
@@ -140,6 +127,52 @@
 
 /* INFORMATION DETAILS */
 
+.information-popup h1 {
+  align-self: center;
+}
+
+.information-popup h2 {
+  font-size: 1.1em;
+  color: black;
+  text-shadow: 1px 1px 3px yellow;
+}
+
+.information-popup .h2-container {
+  display: flex;
+  align-self: center;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 0.4vh;
+}
+
+.information-popup .h2-container::after {
+  content: '';
+  display: inline-block;
+  margin: 0.4em 0;
+  width: 140%;
+  border: 1px groove lightgreen;
+}
+
 .about {
   list-style: none;
+}
+
+.steps-list {
+  list-style-position: inside;
+}
+
+.steps-list.one {
+  list-style-type: decimal;
+}
+
+.steps-list.two {
+  list-style-type: lower-alpha;
+}
+
+.steps-list li {
+  margin-bottom: 0.5vh;
+}
+
+.steps-list.two i {
+  color: #f5d90a;
 }
