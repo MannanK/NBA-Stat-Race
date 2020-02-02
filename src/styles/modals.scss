@@ -57,19 +57,25 @@
   justify-content: flex-start;
   height: 60%;
   width: 40%;
-  overflow-y: auto;
+  overflow: hidden;
 
   @media (max-width: 500px)  { 
     width: 60%;
   }
 }
 
-.information-popup::-webkit-scrollbar {
+.inner-information-popup {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.inner-information-popup::-webkit-scrollbar {
   background-color: transparent;
   width: 4px;
 }
 
-.information-popup::-webkit-scrollbar-thumb {
+.inner-information-popup::-webkit-scrollbar-thumb {
   background-color: #7a0025;
   border-radius: 10px;
 }
