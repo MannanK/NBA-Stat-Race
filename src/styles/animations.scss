@@ -49,3 +49,42 @@
   60% { box-shadow: 0 0 15px rgb(175, 42, 42); }
   100% { box-shadow: 0 0 -5px rgb(175, 42, 42); }
 }
+
+@-webkit-keyframes graph-glow {
+  0% { box-shadow: 0 0 -5px rgb(175, 42, 42); }
+  40% { box-shadow: 0 0 15px rgb(175, 42, 42); }
+  60% { box-shadow: 0 0 15px rgb(175, 42, 42); }
+  100% { box-shadow: 0 0 -5px rgb(175, 42, 42); }
+}
+
+@-moz-keyframes graph-glow {
+  0% { box-shadow: 0 0 -5px rgb(175, 42, 42); }
+  40% { box-shadow: 0 0 15px rgb(175, 42, 42); }
+  60% { box-shadow: 0 0 15px rgb(175, 42, 42); }
+  100% { box-shadow: 0 0 -5px rgb(175, 42, 42); }
+}
+
+@-o-keyframes graph-glow {
+  0% { box-shadow: 0 0 -5px rgb(175, 42, 42); }
+  40% { box-shadow: 0 0 15px rgb(175, 42, 42); }
+  60% { box-shadow: 0 0 15px rgb(175, 42, 42); }
+  100% { box-shadow: 0 0 -5px rgb(175, 42, 42); }
+}
+
+@keyframes color-change {
+  from {
+    -webkit-filter: hue-rotate(0deg);
+  }
+  to {
+    -webkit-filter: hue-rotate(-360deg);
+  }
+}
+
+@-webkit-keyframes color-change {
+  from {
+    -webkit-filter: hue-rotate(0deg);
+  }
+  to {
+    -webkit-filter: hue-rotate(-360deg);
+  }
+}
