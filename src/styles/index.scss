@@ -31,15 +31,6 @@ body {
 	-webkit-animation: color-change 5s infinite linear;
 }
 
-@-webkit-keyframes color-change {
-  from {
-    -webkit-filter: hue-rotate(0deg);
-  }
-  to {
-    -webkit-filter: hue-rotate(-360deg);
-  }
-}
-
 // TOP ROW, BOTTOM ROW
 
 .top-row, .bottom-row {
