@@ -1,6 +1,6 @@
 /* MODAL CONTAINER */
 
-.no-player-in-season, .duplicate-player, .glossary {
+.no-player-in-season, .duplicate-player, .glossary, .information {
   background: rgba(0, 0, 0, 0.6);
   left: 0;
   position: fixed;
@@ -10,18 +10,20 @@
   width: auto !important;
 }
 
-.glossary {
+.glossary, .information {
   display: none;
+  justify-content: center;
+  align-items: center;
 }
 
 /* MODAL POPUP */
 
-.no-player-in-season-popup, .duplicate-player-popup, .glossary-popup {
+.no-player-in-season-popup, .duplicate-player-popup, .glossary-popup, .information-popup {
   position: relative;
   top: 45%;
   margin: 0 auto;
   width: fit-content;
-  background-color: rgb(175, 42, 42);
+  background: transparent linear-gradient(rgb(179, 169, 34), rgb(110, 105, 23) 30%,rgb(73, 70, 15) 85%);
   height: 12%;
   padding: 15px;
   display: flex;
@@ -33,11 +35,61 @@
   color: white;
 }
 
-.glossary-popup {
+.glossary-popup, .information-popup {
   height: fit-content;
   padding-left: 25px;
   padding-right: 25px;
-  top: 30%;
+  top: 0%;
+
+  font-size: 1.1em;
+
+  @media (max-width: 500px)  { 
+    font-size: 1em;
+  }
+
+  @media (max-height: 500px)  { 
+    font-size: 0.8em;
+  }
+}
+
+.information-popup {
+  /* align-items: flex-start; */
+  justify-content: flex-start;
+  max-height: 60%;
+  width: 40%;
+  overflow: hidden;
+  min-height: fit-content;
+
+  @media (max-width: 500px)  { 
+    width: 60%;
+  }
+}
+
+.inner-information-popup {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.inner-information-popup::-webkit-scrollbar {
+  background-color: transparent;
+  width: 4px;
+}
+
+.inner-information-popup::-webkit-scrollbar-thumb {
+  background-color: #7a0025;
+  border-radius: 10px;
+}
+
+.info-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 1em;
+}
+
+.glossary-popup h1, .information-popup h1 {
+  font-size: 1.5em;
 }
 
 .glossary-popup h1 {
@@ -46,7 +98,7 @@
 
 /* MODAL BUTTON */
 
-.no-player-in-season-button, .duplicate-player-button, .glossary-button {
+.no-player-in-season-button, .duplicate-player-button, .glossary-button, .information-button {
   border: none;
   padding: 0;
   background: none;
@@ -58,7 +110,7 @@
   color: rgb(55, 194, 209);
 }
 
-.no-player-in-season-button:hover, .duplicate-player-button:hover, .glossary-button:hover {
+.no-player-in-season-button:hover, .duplicate-player-button:hover, .glossary-button:hover, .information-button:hover {
   cursor: pointer;
   color: rgb(9, 149, 165);
 }
@@ -78,4 +130,56 @@
 
 .full {
   color: greenyellow;
+}
+
+/* INFORMATION DETAILS */
+
+.information-popup h1 {
+  align-self: center;
+}
+
+.information-popup h2 {
+  font-size: 1.1em;
+  color: black;
+  text-shadow: 1px 1px 3px yellow;
+}
+
+.information-popup .h2-container {
+  display: flex;
+  align-self: center;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 0.4vh;
+}
+
+.information-popup .h2-container::after {
+  content: '';
+  display: inline-block;
+  margin: 0.4em 0;
+  width: 140%;
+  border: 1px groove lightgreen;
+}
+
+.about {
+  list-style: none;
+}
+
+.steps-list {
+  list-style-position: inside;
+}
+
+.steps-list.one {
+  list-style-type: decimal;
+}
+
+.steps-list.two {
+  list-style-type: lower-alpha;
+}
+
+.steps-list li {
+  margin-bottom: 0.5vh;
+}
+
+.steps-list.two i {
+  color: #f5d90a;
 }

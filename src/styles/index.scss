@@ -118,11 +118,28 @@ option {
 }
 
 #search-players-input {
+  background: transparent linear-gradient(to right, rgba(201, 190, 38, 0.671), #000);
   min-height: 100%;
   box-sizing: border-box;
   border: none;
   padding: 12px;
   background-color: #1c1c1c;
+  color: white;
+}
+
+#search-players-input::-webkit-input-placeholder {
+  color: white;
+}
+
+#search-players-input::-moz-placeholder {
+  color: white;
+}
+
+#search-players-input:-ms-input-placeholder {
+  color: white;
+}
+
+#search-players-input:-moz-placeholder {
   color: white;
 }
 
@@ -147,6 +164,8 @@ option {
 // PLAYER NAMES
 
 .player-names-container {
+  
+  background: transparent linear-gradient(to left, rgba(201, 190, 38, 0.671), #000);
   width: 75.5%;
   min-height: 5vh;
   max-height: fit-content;
