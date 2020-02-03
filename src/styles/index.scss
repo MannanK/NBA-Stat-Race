@@ -21,8 +21,23 @@ body {
 .site-header {
   align-self: center;
   font-size: 40px;
-  color: white;
   margin-bottom: 35px;
+  color: #f35626;
+  background-image: -webkit-linear-gradient(20deg, #f3d426, #1bca1b);
+  background-clip: inherit;
+	-webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: color-change 5s infinite linear;
+	-webkit-animation: color-change 5s infinite linear;
+}
+
+@-webkit-keyframes color-change {
+  from {
+    -webkit-filter: hue-rotate(0deg);
+  }
+  to {
+    -webkit-filter: hue-rotate(-360deg);
+  }
 }
 
 // TOP ROW, BOTTOM ROW
