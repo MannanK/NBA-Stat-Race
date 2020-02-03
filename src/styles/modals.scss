@@ -8,6 +8,7 @@
   top: 0;
   bottom: 0;
   width: auto !important;
+  font-family: 'Signika', sans-serif;
 }
 
 .glossary, .information {
@@ -33,6 +34,10 @@
   border-radius: 20px;
   box-shadow: 3px 4px 8px -2px white;
   color: white;
+}
+
+.no-player-in-season-popup, .duplicate-player-popup {
+  background: rgb(175, 42, 42);
 }
 
 .glossary-popup, .information-popup {
