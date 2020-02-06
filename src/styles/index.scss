@@ -58,9 +58,19 @@ body {
   width: 45%;
   cursor: pointer;
   border: none;
-  padding: 0px 7px;
+  padding: 0px 6px;
+  color: white;
+  box-shadow: 0px 0px 4px white;
 
   transition: all 300ms ease-in-out;
+}
+
+#season-dropdown {
+  background: transparent linear-gradient(to right, rgba(201, 190, 38, 0.671), #000);
+}
+
+#stat-dropdown {
+  background: transparent linear-gradient(to left, rgba(201, 190, 38, 0.671), #000);
 }
 
 #season-dropdown:hover, #stat-dropdown:hover {
@@ -72,8 +82,8 @@ option {
 }
 
 .not-selected-error {
-  background-color: rgb(175, 42, 42);
-  color: rgb(255, 225, 0);
+  background: rgb(175, 42, 42) !important;
+  color: rgb(255, 225, 0) !important;
 }
 
 .not-selected-error.animation {
@@ -98,8 +108,18 @@ option {
   cursor: pointer;
   border: none;
   padding: 0px 7px;
+  box-shadow: 0px 0px 4px white;
+  color: white;
 
   transition: all 300ms ease-in-out;
+}
+
+#information-button {
+  background: transparent linear-gradient(to right, rgba(224, 40, 21, 0.671), #000);
+}
+
+#glossary-button {
+  background: transparent linear-gradient(to left, rgba(224, 40, 21, 0.671), #000);
 }
 
 #glossary-button:hover, #information-button:hover {
