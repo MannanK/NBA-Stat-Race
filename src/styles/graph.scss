@@ -18,10 +18,10 @@
 }
 
 .graph-glow {
-  -webkit-animation: graph-glow 1200ms infinite;
-  -moz-animation: graph-glow 1200ms infinite;
-  -o-animation: graph-glow 1200ms infinite;
-  animation: graph-glow 1200ms infinite;
+  -webkit-animation: graph-glow 1200ms infinite !important;
+  -moz-animation: graph-glow 1200ms infinite !important;
+  -o-animation: graph-glow 1200ms infinite !important;
+  animation: graph-glow 1200ms infinite !important;
 }
 
 // GRAPH ELEMENTS
